@@ -28,29 +28,39 @@
    	String sql= " SELECT i_board, title FROM t_board "; //양쪽에 빈칸주기 
 	    
     try{    	
-    	con=getCon();//*
-    	ps= con.prepareStatement(sql);//*
-    	rs= ps.executeQuery(); // 무조건 SELECT만!!!! 
+    	con=getCon();//* 접속
+    	ps= con.prepareStatement(sql);//* 명령어 전달
+    	rs= ps.executeQuery(); // 무조건 SELECT만!!!! *값전달 
     	
     	//list에 값넣어주시 (parsing)
     	while(rs.next()){ //rs.next()는 행을 가르키고  결과값은 참(레코드가 있다면), 거짓! 레코드가 있다면 반복! 레코드 없이면 끝!
     		
     		int i_board=rs.getInt("i_board");//괄호안에 "컬럼명" 
-			String title=rs.getNString("title"); //get현재 가르키고 있는 레코드에서 가져오고 싶은 컬럼값을 가져옴.  	//스트링 스트링
-    		BoardVO vo = new BoardVO(); //********whille밖에 있다면 같은 값으로 리턴됨. 
-    		vo.setI_board(i_board);
-    		vo.setTitle(title);    		
-    		boardList.add(vo);
+			
+    		String title=rs.getNString("title"); //get현재 가르키고 있는 레코드에서 가져오고 싶은 컬럼값을 가져옴.  	//스트링 스트링
+    		
+			BoardVO vo = new BoardVO(); //********whille밖에 있다면 같은 값으로 리턴됨. 
+    		
+			vo.setI_board(i_board); //가져온 값 넣기 
+    		
+			vo.setTitle(title);    		
+    		
+			boardList.add(vo); //boardList에 담아요.
     		
     	}
     	
-    }catch(Exception e){ //이걸 맨밑에 주고 예상가능한 에러들을 catch(){}형태로 추가 가능
-    	e.printStackTrace(); //에러메세지 출력 
-    }finally{
+    }catch(Exception e){
+    	//이걸 맨밑에 주고 예상가능한 에러들을 catch(){}형태로 추가 가능
+    	e.printStackTrace(); //에러메세지 출력 //구체적인 예외처리 따로 공부하기  
+    	
+    }finally{  //닫는 이유는 안해주면 서버가 죽어서.. 
+    	
       //닫을때 반대로 !
-      if(rs!=null){try{rs.close();}catch(Exception e){}}
-      if(ps!=null){try{rs.close();}catch(Exception e){}}
-      if(con!=null){try{rs.close();}catch(Exception e){}} 	
+      if(rs!=null){try{rs.close();}catch(Exception e){}} //하나가 실패하더라도 다른 곳은 닫히도록 해줌. 희박하지만 혹시 모르는 상황에 
+                                                         //대비해서 FM
+      if(ps!=null){try{ps.close();}catch(Exception e){}}
+      
+      if(con!=null){try{con.close();}catch(Exception e){}} 	
     }
    
     %>
@@ -70,10 +80,14 @@
 			<th>NO</th>
 			<th>제목</th>
 		</tr>
-		<%for(BoardVO vo : boardList){ %> 
+		<%for(BoardVO vo : boardList){ %>
 		<tr>
 			<td><%=vo.getI_board()%></td>
-			<td><%=vo.getTitle()%></td>
+			<td>
+			<a href="/jsp/boardDetail.jsp?i_board=<%=vo.getI_board()%>"> 
+					<%=vo.getTitle()%>
+			</a>
+		</td>
 		</tr>
 		<%}%>
 	</table>
