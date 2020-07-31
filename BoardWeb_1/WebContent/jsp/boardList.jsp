@@ -69,11 +69,38 @@
 <head>
 <meta charset="UTF-8">
 <title>게시판</title>
+<style>
+table {
+	width: 60%;
+	border: 1px solid black;
+	background-color: blanchedalmond;
+	border-collapse: collapse;
+}
+
+th {
+	background-color: rgb(233, 217, 203)
+}
+
+th, tr, td {
+	border: 1px solid black;
+	height: 25px;
+}
+
+.head {
+	width: 10%;
+	text-align: center;
+}
+
+.ctnt {
+	padding-left: 30px;
+}
+</style>
 
 </head>
 <body>
 	<div>
 		<h3>게시판 리스트</h3>
+
 	</div>
 	<table>
 		<tr>
@@ -82,14 +109,15 @@
 		</tr>
 		<%for(BoardVO vo : boardList){ %>
 		<tr>
-			<td><%=vo.getI_board()%></td>
-			<td>
-			<a href="/jsp/boardDetail.jsp?i_board=<%=vo.getI_board()%>"> 
-					<%=vo.getTitle()%>
-			</a>
-		</td>
+			<td class="head"><%=vo.getI_board()%></td>
+			<td class="ctnt">
+			<a href="/jsp/boardDetail.jsp?i_board=<%=vo.getI_board()%>"> <%=vo.getTitle()%>
+			</a></td>
 		</tr>
 		<%}%>
 	</table>
+	<a href="/jsp/boardWrite.jsp"> <!--화면띄우기  /2개의 jsp파일이 필요하고/-->
+		<button>글쓰기</button>
+	</a>
 </body>
 </html>
