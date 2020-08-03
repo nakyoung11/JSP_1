@@ -1,3 +1,4 @@
+<!-- pk값으로 디테일을 보여줌  -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
@@ -37,6 +38,7 @@
 	ResultSet rs=null; 
     int i_board= Integer.parseInt(strI_board);
 	String sql=" SELECT title, ctnt, i_student FROM t_board WHERE i_board= ? "; 
+	//무언가 보기 위해서 는 PK 값이 필요해 
    	BoardVO vo = new BoardVO(); 
    	
    	try{
@@ -124,6 +126,7 @@ th {
 		
 	<div> <a href="/jsp/boardList.jsp">목록</a></div>
 	<a href="#" onclick="procDel(<%=i_board%>)">삭제</a>
+	<a href="/jsp/boardMod.jsp?i_board=<%=i_board%>">수정</a> <!-- 수정할값을 같이 넘겨주기  -->
 	<div>제목: <%=vo.getTitle() %></div>
 	<div>내용: <%=vo.getCtnt() %></div>
 	<div>작성자:<%=vo.getI_student() %></div>

@@ -23,9 +23,9 @@
     List <BoardVO> boardList = new ArrayList();
     Connection con= null; //finally에서도 사용하고 싶어서. ~ try에서만 하면 try{}에서만 살아있어요.   연결
    	PreparedStatement ps =null;//실행 명령 , 문장 완성(printf)    실행
-   	ResultSet rs=null;// 하드웨어의 사양만큼 데이터를 담음    	    담음   
+   	ResultSet rs=null;// 하드웨어의 사양만큼 데이터를 담음    	    담음    //SELECT문에서만
    	
-   	String sql= " SELECT i_board, title FROM t_board "; //양쪽에 빈칸주기 
+   	String sql= " SELECT i_board, title FROM t_board ORDER BY i_board DESC"; //양쪽에 빈칸주기 
 	    
     try{    	
     	con=getCon();//* 접속
