@@ -29,6 +29,7 @@ th, tr, td {
 	border: 1px solid black;
 	height: 25px;
 }
+.itemRow:hover {background-color: rgb(233, 217, 203); cursor:pointer}
 
 .head {
 	width: 10%;
@@ -55,7 +56,7 @@ th, tr, td {
 			<th>작성자</th>
 		</tr>
 		<% for(BoardVO vo : list){ %>
-		<tr>
+		<tr class="itemRow" onclick="moveToDetail(<%=vo.getI_board()%>)">
 			<td class="head">
 			<%=vo.getI_board()%></td>
 			<td class="ctnt">
@@ -65,5 +66,14 @@ th, tr, td {
 		</tr>
 		<%}%>
 	</table>
+	<script>
+	function moveToDetail(i_board){
+		console.log('moveToDetail-i_board:'+i_board)
+		location.href='boardDetail?i_board='+i_board
+	}
+	
+	</script> 
+	
+	
 </body>
 </html>
