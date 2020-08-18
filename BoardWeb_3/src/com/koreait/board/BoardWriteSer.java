@@ -21,33 +21,46 @@ public class BoardWriteSer extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String jsp="/WEB-INF/view/boardRegmod.jsp";
 		request.getRequestDispatcher(jsp).forward(request, response);		
-	
-		
-		
-		
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		String strI_board=request.getParameter("i_board");
-		int i_board=Utils.parseStrToint(strI_board, 0);
+	    //숫자를 보내더라도 문자로 날라가 ! HTML로 보낸것은 모두 문자 
+		String title=request.getParameter("title");
 		String ctnt=request.getParameter("ctnt");
 		String strI_student=request.getParameter("i_student");
-		int i_student=Utils.parseStrToint(strI_student, 0);
-		String title=request.getParameter("title");
+		
+  //값이 잘 넘어왔는지 ! 단위 테스트
+		System.out.println("title : "+ title);
+		System.out.println("ctnt : "+ ctnt);
+		System.out.println("i_student : "+Utils.parseStrToint(strI_student, 0));	
 		
 		BoardVO param= new BoardVO();
-		param.setCtnt(ctnt);
-		param.setI_board(i_board);
-		param.setI_student(i_student);
 		param.setTitle(title);
-		BoardDAO.selBoardWrite(param);
-		response.sendRedirect("/boardList");
+		param.setCtnt(ctnt);
+        param.setI_student(Utils.parseStrToint(strI_student, 0));	
+        
+        		
+		int result= BoardDAO.insBoardWrite(param);
+		//값이 잘 넘어왔다면 1출력! 
+		
+		if(result==1) {response.sendRedirect("/boardList");
+		}else {
+			response.sendRedirect("/err");
+			//request.setAttribute("msg", "에러가 발생하였습니다.");
+			doGet(request,response);
+		}
 		
 		
 		
 		
-		;
+		
+		System.out.println("result : "+result);
+		
+		
+		
+		
+		
+
 	}
 
 }

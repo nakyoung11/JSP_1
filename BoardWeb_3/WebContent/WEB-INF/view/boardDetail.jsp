@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 
 
 <!DOCTYPE html>
@@ -9,10 +9,29 @@
 <title>상세페이지</title>
 </head>
 <body>
-<div>상세페이지</div>
-<div>글번호:${data.i_board} </div> <!-- El식? setAttribute한것만 가능  -->
-<div>제목:${data.title} </div>
-<div>내용:${data.ctnt} </div>
-<div>작성자:${data.i_student}</div>
+	<div>
+		<button onclick="doDle(${data.i_board})">삭제</button>
+		<a href="/boardMod?i_board=${data.i_board}"><button>수정</button></a>
+	</div>
+	<div>상세페이지</div>
+	<div>글번호:${data.i_board}</div>
+	<!-- El식? setAttribute한것만 가능  -->
+	<div>제목:${data.title}</div>
+	<div>내용:${data.ctnt}</div>
+	<div>작성자:${data.i_student}</div>
+	
+	
+	<script>
+	function doDle(i_board){
+		if(confirm('삭제하시겠습니까?')){
+			location.href='/boardDel?i_board='+i_board
+		}
+	}
+	
+
+
+</script>
+
+
 </body>
 </html>
