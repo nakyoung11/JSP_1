@@ -37,8 +37,9 @@ th, tr, td {
 }
 
 .ctnt {
-	padding-left: 30px;
-}
+	padding-left: 30px;}
+
+
 </style>
 
 </head>
@@ -46,7 +47,7 @@ th, tr, td {
 	<div>
 		<h3>게시판 리스트</h3>
 		<a href="/boardWrite"> <!--화면띄우기  /2개의 jsp파일이 필요하고/-->
-		<button>글쓰기</button>
+		<button id="btn">글쓰기</button>
 	</a>
 	</div>
 	<table>
