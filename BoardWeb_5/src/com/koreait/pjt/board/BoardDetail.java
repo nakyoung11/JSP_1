@@ -30,7 +30,9 @@ public class BoardDetail extends HttpServlet {
 		
 		String strI_board= request.getParameter("i_board");
 		int i_board=Integer.parseInt(strI_board);
-	
+
+		
+		
 		//단독으로 조회수 올리기 방지
 		ServletContext application=getServletContext(); //어플리케이션 객체 얻기 (이 방법뿐!)
 		//서버가 켜질때 1개만 만들어져!  //내장객체 4개는 get // set !
@@ -47,7 +49,7 @@ public class BoardDetail extends HttpServlet {
 				
 		BoardVO param= new BoardVO();
 		param.setI_board(i_board);
-
+		param.setI_user(loginUser.getI_user());
 		
 		BoardVO items= BoardDAO.selBoard(param);
 

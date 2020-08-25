@@ -10,9 +10,30 @@ public class BoardVO {
 	private String m_dt;
 	private String user_id;
 	private String nm;
+	private int yn_like;
+	private int count;
 	
 	
 	
+	
+	
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	public int getYn_like() {
+		return yn_like;
+	}
+	public void setYn_like(int yn_like) {
+		this.yn_like = yn_like;
+	}
+
+	
+	
+	
+
 	public String getNm() {
 		return nm;
 	}
@@ -67,6 +88,9 @@ public class BoardVO {
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
+	
+	
+
 	
 	
 	

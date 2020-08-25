@@ -5,9 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 </head>
 <style>
-*{
+<style>
+*{ 
+font-family: 'Nanum Gothic', sans-serif;
 	outline: none;
 }
 .container{width:500px; margin: 50px auto ;}
@@ -15,7 +18,7 @@ h1{text-align: center;}
 .frcont{background:#645574; padding:10px}
 form{margin:30px ;padding: 5px 5px 5px 55px}
 label{display:inline-block; width:100px; height: 25px; margin:10px; color:#F2EBF5}
-input{height: 25px ;border-bottonm:1px solid #000000;}
+input{height: 25px ; border: none;background: #645574;  border-bottom: 1px solid rgb(239, 232, 241);}
 #info{margin:10px; padding-left:70px;font-size:smaller}
 #btn{display:inline-block; margin: 50px 20px 20px 28px;width:250px; height:35px;
 background: #FFFFFF; border-radius: 20px; border:none}

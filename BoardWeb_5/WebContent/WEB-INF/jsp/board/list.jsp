@@ -8,14 +8,16 @@
 <head>
 <meta charset="UTF-8">
 <title>리스트</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <style>
 *{
+font-family: 'Nanum Gothic', sans-serif;
 	outline: none;
 }
 body{background-color: rgb(247, 246, 245)}
-.container{width:800px;  margin: 50px auto}
+.container{width:1000px;  margin: 50px auto}
 table {
-	width: 600px;
+	width: 800px;
 	border: 1px solid black;
 	border-collapse: collapse;
 }
@@ -44,10 +46,10 @@ td{text-align:center}
 }
 #logOut{color:#E02A11; letter-spacing :-2.5px; border:#E02A11 }
 a{text-decoration: none; color:#F2EBF5; font-size:smaller}
-p{font-size: 15px}
+p{font-size: 15px; font-weight:bold}
 
 	
-#btn{display:inline-block; margin-left:555px; margin-bottom: 20px;width:50px; height:50px; 
+#btn{display:inline-block; margin-left:75%; margin-bottom: 20px;width:50px; height:50px; 
 background: #645574; border-radius: 50%; border:none;}
 #btn:hover{background-color: #5C1D75;}
 .click{cursor:pointer}
@@ -57,7 +59,7 @@ background: #645574; border-radius: 50%; border:none;}
 <body>
 	<div class="container">
 		 <!--화면띄우기  /2개의 jsp파일이 필요하고/-->
-		<p>${loginUser.nm}님 환영합니다. &nbsp;&nbsp;<a id="logOut" href="/logout">로그아웃</a></p>
+		<p>${loginUser.nm}님 환영합니다.&nbsp;&nbsp;<a id="logOut" href="/logout">로그아웃</a></p>
 		
 		
 		<button id="btn"><a  href="/board/regmod">글쓰기</a></button>
@@ -67,10 +69,10 @@ background: #645574; border-radius: 50%; border:none;}
 	<table>
 		<tr>
 			<th>NO</th>
-			<th width=280px>제목</th>
+			<th width=400px>제목</th>
 			<th>작성자</th>
 			<th>조회수</th>
-			<th width=160px>작성일</th>
+			<th width=200px>작성일</th>
 		</tr>
 
 		<c:forEach items="${list}" var="item">

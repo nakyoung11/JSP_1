@@ -6,8 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>${data==null? '등록' : '수정'}</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <style>
 *{
+font-family: 'Nanum Gothic', sans-serif;
 	outline: none;
 }
 body{background-color: rgb(247, 246, 245)}

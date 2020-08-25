@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import com.koreait.vo.BoardLikeVO;
 import com.koreait.vo.BoardVO;
 
 import javafx.css.PseudoClass;
@@ -14,8 +15,11 @@ public class BoardDAO {
 		final List<BoardVO> list = new ArrayList();
 		// 레퍼런스 상수는 주소값을 고정!! 객체에 추가를 막는것은 아니다.
 
-		String sql = " SELECT A.i_board, A.title, A.hits, B.nm, A.r_dt, A.m_dt FROM t_board5 A " + " inner Join t_user B"
-				+ " on A.i_user = B.i_user " + " ORDER BY i_board DESC ";
+		String sql = " SELECT A.i_board, A.title, A.hits, B.nm, TO_CHAR(A.r_dt, 'YYYY/MM/DD HH24:MI') as r_dt, "
+				+ "TO_CHAR(A.m_dt, 'YYYY/MM/DD') as m_dt FROM t_board5 A " 
+				+ " inner Join t_user B"
+				+ " on A.i_user = B.i_user "
+				+ " ORDER BY i_board DESC ";
 
 		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 
@@ -77,14 +81,22 @@ public class BoardDAO {
 
 		String sql = " SELECT A.i_board, A.title, A.ctnt, A.hits, B.nm, " 
 		        + " A.r_dt, A.m_dt, A.hits," 
-		        + " A.i_user FROM t_board5 A "
-				+ " inner Join t_user B" + " on A.i_user = B.i_user " + " WHERE i_board= ? ";
+		        + " A.i_user, DECODE(C.i_user, null, 0, 1)as yn_like, (SELECT COUNT(*) FROM t_board5_like WHERE i_board= ?) as count"
+		        + " FROM t_board5 A "
+				+ " inner Join t_user B" 
+		        + " on A.i_user = B.i_user "
+		        + " LEFT JOIN t_board5_like C"
+		        + " ON A.i_board=C.i_board"
+		        + " AND C.i_user= ?"
+				+ " WHERE A.i_board= ? ";  
 
 		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 
 			@Override
 			public void prepared(PreparedStatement ps) throws SQLException {
 				ps.setInt(1, param.getI_board());
+				ps.setInt(2, param.getI_user());
+				ps.setInt(3, param.getI_board());
 			}
 
 			@Override
@@ -98,7 +110,9 @@ public class BoardDAO {
 					String ctnt = rs.getNString("ctnt");
 					String r_dt = rs.getNString("r_dt");
 					String m_dt=rs.getNString("m_dt");
-					int i_user = rs.getInt("i_user");
+					int i_user = rs.getInt("i_user"); //작성자 
+					int yn_like=rs.getInt("yn_like");
+					int count = rs.getInt("count");
 					
 
 					vo.setI_board(i_board);
@@ -109,6 +123,8 @@ public class BoardDAO {
 					vo.setR_dt(r_dt);
 					vo.setI_user(i_user);
 					vo.setM_dt(m_dt);
+					vo.setYn_like(yn_like);
+					vo.setCount(count);
 
 				}
 				return 1;
@@ -154,6 +170,8 @@ public class BoardDAO {
 
 	}
 	
+	////////////////////////////////
+	
 	public static int addHits(int param) {
 		
 		String sql = " UPDATE t_board5 SET hits=hits+1 WHERE i_board=? ";
@@ -167,4 +185,47 @@ public class BoardDAO {
 	});
 
 }
+	
+	////////////////////////////////////
+	
+	public static int toggleLike(BoardVO param) {
+		
+		if(param.getYn_like()==0) {		
+		String sql=" INSERT INTO t_board5_like ( "
+			  + " i_user, i_board "
+			  + " ) "
+			  +	" VALUES( ?, ?) ";
+		return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
+
+			@Override
+			public void update(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, param.getI_user());
+				ps.setInt(2, param.getI_board());
+			
+    		}
+		});
+		
+		
+		
+	}else if(param.getYn_like()==1) {
+		String sql=" DELETE FROM t_board5_like WHERE i_board=? ";
+			return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
+
+				@Override
+				public void update(PreparedStatement ps) throws SQLException {
+			
+					ps.setInt(1, param.getI_board());
+				
+
+				}
+			});
+		
+		}
+		return 0;
+	}
+	
+	
+	
+////////////////////////////////////////////////////////////////////////////////
+
 }

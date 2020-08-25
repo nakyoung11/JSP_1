@@ -21,6 +21,20 @@ public class MyUtils {
 		return false;
 	}
 	
+	
+	
+	public static int parseStrToInt(String str) {
+		return parseStrToInt(str, 0);
+	}
+	//오버로딩: 파라미터를 다르게함
+	public static int parseStrToInt(String str, int defNo) {
+		try {
+			return Integer.parseInt(str);
+		} catch(Exception e) {
+			return defNo;
+		}
+	}
+	
 
 	public static UserVO getLoginUser(HttpServletRequest request) {
 		HttpSession hs = request.getSession();

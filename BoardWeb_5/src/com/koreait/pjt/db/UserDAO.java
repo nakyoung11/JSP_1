@@ -4,14 +4,42 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
+import com.koreait.vo.UserLoginHistoryVO;
 import com.koreait.vo.UserVO;
 
+import oracle.net.aso.e;
+
 public class UserDAO {
+
+	public static int insUserLoginHistory(UserLoginHistoryVO param) {
+		
+	String sql="  INSERT INTO t_visit_loginhistory "+ 
+			" (i_history, i_user, ip_addr, os, browser) " + 
+			" VALUES (seq_userloghistory.nextval, ? , ?, ? , ?) ";
+	return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
+		public void update(PreparedStatement ps) throws SQLException {
+			ps.setInt(1, param.getI_user());
+			ps.setNString(2, param.getIp_addr());
+			ps.setNString(3, param.getOs());
+			ps.setNString(4, param.getBrowser());
+		}
+	});
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 	/////// insert
 	public static int insUser(UserVO param) {
 
-		String sql = " INSERT INTO t_user " + " (i_user, user_id, user_pw, nm, email) " + " VALUES "
+		String sql = " INSERT INTO t_user " 
+		        + " (i_user, user_id, user_pw, nm, email) "
+				+ " VALUES "
 				+ " (seq_user.nextval,?,?,?,?) ";
 
 		return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
