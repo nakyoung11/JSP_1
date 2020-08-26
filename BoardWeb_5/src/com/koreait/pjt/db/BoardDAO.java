@@ -188,9 +188,8 @@ public class BoardDAO {
 	
 	////////////////////////////////////
 	
-	public static int toggleLike(BoardVO param) {
-		
-		if(param.getYn_like()==0) {		
+	public static int insLike(BoardVO param) {
+
 		String sql=" INSERT INTO t_board5_like ( "
 			  + " i_user, i_board "
 			  + " ) "
@@ -205,9 +204,10 @@ public class BoardDAO {
     		}
 		});
 		
+	}
 		
-		
-	}else if(param.getYn_like()==1) {
+	
+		public static int dleLike(BoardVO param) {
 		String sql=" DELETE FROM t_board5_like WHERE i_board=? ";
 			return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
 
@@ -221,11 +221,11 @@ public class BoardDAO {
 			});
 		
 		}
-		return 0;
-	}
+	
+}
 	
 	
 	
 ////////////////////////////////////////////////////////////////////////////////
 
-}
+

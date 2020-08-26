@@ -24,6 +24,17 @@ body {
 	outline: none;
 }
 
+.incmtlist{margin-top: 10px;}
+#in{
+    padding-left: 5px;
+    border-radius: 5px;
+    margin: 10px 5px 5px 5px ; width: 500px; height: 25px; outline: none; border:none}
+
+#cmtbtn{
+    
+outline: none; border:none ;background: rgb(255, 242, 129); width: 35px; height: 25px; border-radius: 10%;
+font-size: 11px;}
+
 .container {
 	width: 800px;
 	height: 800px;
@@ -41,7 +52,7 @@ body {
 }
 
 .hits, .dt {
-	margin-left: 20px;
+	margin-left: 15px;
 	font-size: smaller
 }
 
@@ -50,7 +61,7 @@ hr {
 }
 
 .nm {
-	font-weight: bold
+	font-weight: bold;
 }
 
 .ctnt {
@@ -102,10 +113,23 @@ a {
 }
 
 .material-icons {
-   margin-left:50%;
+   margin-left:46%;
 	color: red;
 	cursor: pointer
 }
+.cmtlist{margin-top:15px}
+
+
+#cmtMod{all: unset; padding: 15px; font-size: 13px}
+.cmtNm{width: 55px; font-size: 13px; padding-left: 10px; font-weight: bold;}
+.cmtCmt{font-size:15px}
+.m_dt{padding-left:20px; font-size:15px}
+#cmtMod, #cmtdel{color: rgb(150, 148, 146);}
+#cmtdel{font-size: 13px}
+#cmtMod:hover{color: rgb(252, 231, 41) ;}
+#cmtdel:hover{color: rgb(182, 34, 14) ;}
+
+
 </style>
 <body>
 	<div class="container">
@@ -132,8 +156,39 @@ a {
 			</div>
 			<hr>
 			<div class="ctnt">${data.ctnt}</div>
-
+			
+			<div class="cmt">
+		
+		<form id="cmtFrm" action="/board/cmt" method="post">
+		<input type="hidden" name="i_cmt" value="0">
+		                          <!-- 등록과 수정은 value의 값으로 구분(0등록 1수정 -->
+		<input type="hidden" name="i_board" value="${data.i_board}">
+			<div class="incmtlist">
+				<input id="in" type="text" name="cmt" placeholder="욕설이나 비방은 삼가해주세요">
+				<input id="cmtbtn" type="submit" value="전송">
+			</div>
+		</form>
+			<div class="cmtlist">
+			<table>
+			<c:forEach items="${cmtList}" var="item">
+			  <tr>
+			     <td class="cmtNm">${item.nm}</td>
+			     <td class="cmtCmt">${item.cmt}</td>
+			     <td class="m_dt" width=150px>${item.m_dt}</td>
+			     <c:if test="${loginUser.i_user==item.i_user}">
+			     <td width=60px><button id= "cmtMod"onclick="cmtMod(${item.i_cmt})">수정</button></td>
+			     <td width=40px><a id="cmtdel" href="/board/cmt?i_board=${data.i_board}&i_cmt=${item.i_cmt}">삭제</a></td>
+			     </c:if>
+			     
+		     </tr>
+		   </c:forEach>  
+		   </table>
+		   
+		   </div>
 		</div>
+		
+		</div>
+		
 		<button id="btn1">
 			<a href="/board/list">목록</a>
 		</button>
@@ -167,6 +222,14 @@ a {
 			location.href = "/board/toggleLike?i_board=${data.i_board}&yn_like="
 					+ yn_like
 		}
+		
+		function cmtMod(i_cmt){
+		 	var modInput = document.createElement('input')
+		 	cmtMod.setAttribute()
+		 	
+		}
+		
+		
 	</script>
 </body>
 </html>

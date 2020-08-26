@@ -37,14 +37,22 @@ public class ToggleLike extends HttpServlet {
 	//System.out.println(strYn_like);
 	
 	int i_board=MyUtils.parseStrToInt(strI_board);
-	int yn_like=MyUtils.parseStrToInt(strYn_like);
-		
+	int yn_like=MyUtils.parseStrToInt(strYn_like, 3);
+	
 	BoardVO param=new BoardVO();
 	param.setI_board(i_board);
 	param.setI_user(loginUser.getI_user());
-	param.setYn_like(yn_like);
+
 	
-	int like=BoardDAO.toggleLike(param);
+	if(yn_like==0) {
+		BoardDAO.insLike(param);
+	}else if(yn_like==1) {
+		BoardDAO.dleLike(param);
+	}
+		
+
+	
+	
 	
 
 	response.sendRedirect("/board/detail?i_board="+i_board);

@@ -42,19 +42,19 @@ background: #FFFFFF; border-radius: 20px; border:none}
 				
 				<div>
 					<label for="urid"> 아이디</label>
-					<input type="text" name="user_id" placeholder="아이디" id="urid" required  value="${data.user_id}">
+					<input type="text" name="user_id" placeholder="아이디(5글자 이하)" id="urid" required  value="${data.user_id}">
 					
 				</div>
 				<div>
 					<label for="urpw">비밀번호</label>
-					<input type="password" name="user_pw" placeholder="비밀번호" id="urid" required>
+					<input type="password" name="user_pw" placeholder="비밀번호 (5글자 이상)" id="urid" required>
 				</div>
 				<div>
 					 <label for="urpwr">비밀번호확인</label>
 					<input type="password" name="user_pwre" placeholder="비밀번호확인" id="urpwr">
 				</div>
 				<div><label for="urnm">이름</label>
-					<input type="text" name="nm" placeholder="이름" required  value="${data.nm}">
+					<input type="text" name="nm" placeholder="이름(2글자 이상 5글자 미만)" required  value="${data.nm}">
 				</div>
 				<div><label for="uremail">이메일</label>
 					<input type="email" name="email" placeholder="이메일" id="uremail"  value="${data.email}">
@@ -85,7 +85,7 @@ background: #FFFFFF; border-radius: 20px; border:none}
 				alert("비밀번호를 확인해주세요.")
 				frm.user_pw.focus()
 				return false
-			} else if (frm.nm.value.length > 2) {
+			} else if (frm.nm.value.length > 2&&frm.nm.value.length<5) {
 				const korean = /[^가-힣]/;
 				//const result = korean.test(frm.nm.value)
 				if (korean.test(frm.nm.value) {

@@ -12,8 +12,39 @@ public class BoardVO {
 	private String nm;
 	private int yn_like;
 	private int count;
+	private int i_cmt;
+	private String cmt;
+	private String c_r_dt;
+	private String c_m_dt;
 	
 	
+	
+	
+	public int getI_cmt() {
+		return i_cmt;
+	}
+	public void setI_cmt(int i_cmt) {
+		this.i_cmt = i_cmt;
+	}
+	public String getCmt() {
+		return cmt;
+	}
+	public void setCmt(String cmt) {
+		this.cmt = cmt;
+	}
+	public String getC_r_dt() {
+		return c_r_dt;
+	}
+	public void setC_r_dt(String c_r_dt) {
+		this.c_r_dt = c_r_dt;
+	}
+	public String getC_m_dt() {
+		return c_m_dt;
+	}
+	public void setC_m_dt(String c_m_dt) {
+		this.c_m_dt = c_m_dt;
+	}
+
 	
 	
 	
