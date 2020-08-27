@@ -24,14 +24,11 @@ body {
 	outline: none;
 }
 
-.incmtlist{margin-top: 10px;}
-#in{
-    padding-left: 5px;
-    border-radius: 5px;
-    margin: 10px 5px 5px 5px ; width: 500px; height: 25px; outline: none; border:none}
 
-#cmtbtn{
-    
+
+
+.cmtbtn{
+	 cursor: pointer; 
 outline: none; border:none ;background: rgb(255, 242, 129); width: 35px; height: 25px; border-radius: 10%;
 font-size: 11px;}
 
@@ -117,10 +114,16 @@ a {
 	color: red;
 	cursor: pointer
 }
-.cmtlist{margin-top:15px}
 
+.cmtlist{margin:5px}
 
-#cmtMod{all: unset; padding: 15px; font-size: 13px}
+td{padding: 5px}
+
+#cmtCnt{  padding-left: 5px; 
+    border-radius: 5px;
+    margin: 10px 5px 5px 5px ; margin-bottom: 10px;width: 500px; height: 25px; outline: none; border:none}
+
+#cmtMod{all: unset; padding-left: 15px; font-size: 13px;	cursor: pointer}
 .cmtNm{width: 55px; font-size: 13px; padding-left: 10px; font-weight: bold;}
 .cmtCmt{font-size:15px}
 .m_dt{padding-left:20px; font-size:15px}
@@ -150,7 +153,7 @@ a {
 				<c:if test="${data.yn_like==1}">
 					<span class="material-icons" onclick="like(1)">favorite</span>
 				</c:if>
-				<span class="count">종아요 ${data.count}</span> 
+				<span class="count">종아요 ${data.count}&nbsp; 댓글 ${data.cmtCount}</span> 
 
 
 			</div>
@@ -160,24 +163,26 @@ a {
 			<div class="cmt">
 		
 		<form id="cmtFrm" action="/board/cmt" method="post">
-		<input type="hidden" name="i_cmt" value="0">
+		<input type="hidden" name="i_cmt" value="0"><!--수정: i_cmt값주고,  -->
 		                          <!-- 등록과 수정은 value의 값으로 구분(0등록 1수정 -->
 		<input type="hidden" name="i_board" value="${data.i_board}">
 			<div class="incmtlist">
-				<input id="in" type="text" name="cmt" placeholder="욕설이나 비방은 삼가해주세요">
-				<input id="cmtbtn" type="submit" value="전송">
-			</div>
+				<input id="cmtCnt" type="text" name="cmt" placeholder="욕설이나 비방은 삼가해주세요" value=""><!-- 수정 내용 -->
+				<input class="cmtbtn" id="cmtSubmit" type="submit" value="전송"> <!-- 수정으로 버튼 바꾸기  -->
+			    <input class="cmtbtn" type="button" value="취소" onclick="clkCmtCancle()">
+			 </div>
 		</form>
 			<div class="cmtlist">
 			<table>
 			<c:forEach items="${cmtList}" var="item">
-			  <tr>
+			  <tr id="cmtTr">
 			     <td class="cmtNm">${item.nm}</td>
 			     <td class="cmtCmt">${item.cmt}</td>
-			     <td class="m_dt" width=150px>${item.m_dt}</td>
+			     <td class="m_dt" width=150px>${item.r_dt==item.m_dt? item.r_dt:item.m_dt}</td>
 			     <c:if test="${loginUser.i_user==item.i_user}">
-			     <td width=60px><button id= "cmtMod"onclick="cmtMod(${item.i_cmt})">수정</button></td>
-			     <td width=40px><a id="cmtdel" href="/board/cmt?i_board=${data.i_board}&i_cmt=${item.i_cmt}">삭제</a></td>
+			     <td width=60px><button id= "cmtMod" onclick="clkCmtMod(${item.i_cmt},'${item.cmt}')">수정</button></td>
+			     <td width=40px><a id="cmtdel" onclick="clkDel(${item.i_cmt})">삭제</a></td>
+			    
 			     </c:if>
 			     
 		     </tr>
@@ -223,10 +228,27 @@ a {
 					+ yn_like
 		}
 		
-		function cmtMod(i_cmt){
-		 	var modInput = document.createElement('input')
-		 	cmtMod.setAttribute()
+		function clkCmtMod(i_cmt, cmt){
+		 	console.log(i_cmt)
+		 	console.log(cmt)
+			cmtFrm.i_cmt.value=i_cmt
+			cmtFrm.cmt.value= cmt
+			cmtSubmit.value='수정'
+		  
+		    
 		 	
+		}
+		
+		function clkCmtCancle(){
+			cmtFrm.i_cmt.value=0
+			cmtFrm.cmt.value=''
+			cmtSubmit.value='전송'
+		}
+		
+		function clkDel(i_cmt){
+			if(confirm('삭제 하겠습니까?')){
+				location.href='/board/cmt?i_board=${data.i_board}&i_cmt='+i_cmt
+			}
 		}
 		
 		

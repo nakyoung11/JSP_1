@@ -46,6 +46,7 @@ public class BoardCmtDAO {
 			@Override
 			public void prepared(PreparedStatement ps) throws SQLException {
 				ps.setInt(1, i_board);
+		
 				
 			}
 			
@@ -59,6 +60,7 @@ public class BoardCmtDAO {
 					String m_dt=rs.getNString("m_dt");
 					int i_user=rs.getInt("i_user");
 					String nm=rs.getNString("nm");
+			
 					
 					param.setI_cmt(i_cmt);
 					param.setCmt(cmt);
@@ -66,6 +68,7 @@ public class BoardCmtDAO {
 					param.setR_dt(r_dt);
 					param.setNm(nm);
 					param.setI_user(i_user);
+
 					
 					list.add(param);
 				}
@@ -82,7 +85,7 @@ public class BoardCmtDAO {
 	
 
      public static int updCmt(BoardCmtVO param) {
-    	 String sql="UPDATE t_board5_cmt set cmt=? WHERE i_cmt=? ";
+    	 String sql="UPDATE t_board5_cmt set cmt=?, m_dt=sysdate WHERE i_cmt=? ";
     	 
     	 
     	 return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {

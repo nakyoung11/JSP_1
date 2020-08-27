@@ -21,7 +21,11 @@ public class MyUtils {
 		return false;
 	}
 	
-	
+	public static int getIntParameter(HttpServletRequest request, String keyNm) {
+		return parseStrToInt(request.getParameter(keyNm));
+	//무조건 숫자만 넘어와야 0이 아닌값이 뜸. 
+	}
+		
 	
 	public static int parseStrToInt(String str) {
 		return parseStrToInt(str, 0);

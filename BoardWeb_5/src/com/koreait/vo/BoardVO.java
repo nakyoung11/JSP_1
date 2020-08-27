@@ -16,10 +16,37 @@ public class BoardVO {
 	private String cmt;
 	private String c_r_dt;
 	private String c_m_dt;
+	private int cmtCount;
+	private int record_cnt; //페이지당 나오는 글수 
+	private int eidx;
+	private int sidx;
+	
+	public int getEidx() {
+		return eidx;
+	}
+	public void setEidx(int eidx) {
+		this.eidx = eidx;
+	}
+	public int getSidx() {
+		return sidx;
+	}
+	public void setSidx(int sidx) {
+		this.sidx = sidx;
+	}	
 	
 	
-	
-	
+	public int getRecord_cnt() {
+		return record_cnt;
+	}
+	public void setRecord_cnt(int record_cnt) {
+		this.record_cnt = record_cnt;
+	}
+	public int getCmtCount() {
+		return cmtCount;
+	}
+	public void setCmtCount(int cmtCount) {
+		this.cmtCount = cmtCount;
+	}
 	public int getI_cmt() {
 		return i_cmt;
 	}

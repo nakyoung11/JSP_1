@@ -63,6 +63,7 @@ public class BoardDetail extends HttpServlet {
 		
 		
 	     request.setAttribute("cmtList", BoardCmtDAO.selCmtList(i_board));
+	     
 	
 		
 		ViewResolver.forward("board/detail", request, response);

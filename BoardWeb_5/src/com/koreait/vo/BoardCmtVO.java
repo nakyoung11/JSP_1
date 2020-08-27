@@ -9,8 +9,15 @@ public class BoardCmtVO {
 	private String r_dt;
 	private String m_dt;
 	private String nm;
+	private int cmtCount;
 	
 	
+	public int getCmtCount() {
+		return cmtCount;
+	}
+	public void setCmtCount(int cmtCount) {
+		this.cmtCount = cmtCount;
+	}
 	public String getNm() {
 		return nm;
 	}
