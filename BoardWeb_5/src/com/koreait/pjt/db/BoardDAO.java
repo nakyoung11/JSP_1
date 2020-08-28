@@ -22,6 +22,7 @@ public class BoardDAO {
 				+" TO_CHAR(A.m_dt, 'YYYY/MM/DD') as m_dt FROM t_board5 A "
 				+" inner Join t_user B "
 				+" on A.i_user = B.i_user " 
+				+" WHERE A.title like ? " 
 			    +" ORDER BY i_board DESC "
 				+" )A WHERE ROWNUM <= ?"
 			    +" )A WHERE A.RNUM > ?" ;
@@ -38,8 +39,9 @@ public class BoardDAO {
 
 			@Override
 			public void prepared(PreparedStatement ps) throws SQLException {
-				ps.setInt(1, param.getEidx());
-				ps.setInt(2, param.getSidx());
+				ps.setNString(1, param.getSearchText());
+				ps.setInt(2, param.getEidx());
+				ps.setInt(3, param.getSidx());
 			}
 
 			@Override
@@ -248,16 +250,17 @@ public class BoardDAO {
 ////////////////////////////////////////////////////////////////////////////////
 //페이징
 
-	public static int selPageinCnt(final BoardVO param) {
+	public static int selPagingCnt(BoardVO param) {
 		
-		String sql=" SELECT ceil(count(i_board)/?) FROM t_board5 ";
+		String sql=" SELECT ceil(count(i_board)/?) FROM t_board5 "
+				  + " WHERE title like ? ";
 		
 		return JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 			
 			@Override
 			public void prepared(PreparedStatement ps) throws SQLException {
 				ps.setInt(1, param.getRecord_cnt());
-				
+				ps.setNString(2, param.getSearchText());
 			}
 			
 			@Override

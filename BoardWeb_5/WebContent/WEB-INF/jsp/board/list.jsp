@@ -58,6 +58,10 @@ background: #645574; border-radius: 50%; border:none;}
 #btn:hover{background-color: #5C1D75;}
 .click{cursor:pointer}
 .img{background-image:url()}
+#selFrm{margin:5px 0px 10px 5px; width: 250px; display:inline-block;}
+.searchFrm{display: inline-block ;margin:15px 10px 10px 0px;width: 400px;}
+#searchText{width: 250px;height: 25px;border-radius: 10px;  border: 1px solid #aea3b3 ;}
+#seaSubmit{border-radius: 10px; width: 50px; height: 25px; border: none; background:#aea3b3 ;color: white;}
 
 </style>
 </head>
@@ -65,28 +69,30 @@ background: #645574; border-radius: 50%; border:none;}
 <body>
 	<div class="container">
 		 <!--화면띄우기  /2개의 jsp파일이 필요하고/-->
-		<p>${loginUser.nm}님 환영합니다.&nbsp;&nbsp;<a id="logOut" href="/logout">로그아웃</a></p>
-		
+		<p>${loginUser.nm}님 환영합니다👏👏&nbsp;&nbsp;<a id="logOut" href="/logout">로그아웃</a></p>
+		<button id="btn"><a href="/profile"> 프로필 </a></button>
+	
+	
 		<div>
 
 		
 		<button id="btn"><a  href="/board/regmod">글쓰기</a></button>
 		<!-- /의 차이 :  처음부터 시작하고 싶다면 앞에 /를 붙여야하고 안붙인다면 제일 마지막에 있는 주소만 바뀜 
 		     만약 안붙였다면 /board/board/reg-->
-		<form id="selFrm"  action="/board/list?page=${param.page==null? 1:param.page}">
+		<form id="selFrm"  method="get" action="/board/list" >
 		<!-- param.page가 가능한 이유는? String pagedd=request.getParameter("page")와 같기 때문에 -->
-		<input type="hidden" name="page" value="${param.page==null? 1:param.page}">
-		
+		<input type="hidden" name="page" value="${page}"> <!--페이지수-->
+		<input type="hidden" name="searchText" value="${param.searchText}"> 
 		 레코드수 :  
 		 <select name="record_cnt" onchange="changeReCord()">
 		  <c:forEach begin="10" end="30" step="10" var="item">
-		  	<c:choose>
-				  <c:when test="${param.record_cnt==item ||(param.record_cnt==null&&item==10)}">
-				    	<option value=${item}>${item}개</option>
+		  	<c:choose> 
+				  <c:when test="${param.record_cnt==item}">
+				    	<option value="${item}" SELECTED>${item}개</option>
 				  </c:when>
 			
-				  <c:otherwise>		  
-				  	<option value=${item}>${item}개</option>
+				  <c:otherwise>	<!-- else처럼 사용 -->	  
+				  	<option value="${item}">${item}개</option>
 				  </c:otherwise>
 		  		</c:choose>
 		  	</c:forEach>
@@ -94,6 +100,11 @@ background: #645574; border-radius: 50%; border:none;}
 		
 		</form>
 		</div>
+		
+
+
+	
+
 	<table>
 		<tr>
 			<th>NO</th>
@@ -115,19 +126,25 @@ background: #645574; border-radius: 50%; border:none;}
 		</tr>
 		</c:forEach>
 	</table>
+		<form action="/board/list" class="searchFrm">
+			<input type="search" name="searchText"  id="searchText" value="${param.searchText==''? '':param.searchText}">
+			<input type="submit" id="seaSubmit" value="검색">
+		</form>
+		
+	
 	<div class="page">
-	    <a href="/board/list?page=1" class="ff">처음</a>
-		<c:forEach begin="1"  end='${pagingCnt}' var='item'>
+	    <a href="/board/list?page=1&record_cnt=${param.record_cnt==null? 10:param.record_cnt}&searchText=${param.searchText}" class="ff">처음</a>
+		<c:forEach begin="1"  end="${pagingCnt}" var="item">
 		<c:choose>
-		 <c:when test="${inpage == item}">
+		 <c:when test="${page == item}">
 			<span id="pageColor">&nbsp; ${item}&nbsp;&nbsp;</span>
 		 </c:when>
 		 <c:otherwise>
-			<a href="/board/list?page=${item}">&nbsp;${item}&nbsp;&nbsp;</a> 
+			<a href="/board/list?page=${item}&record_cnt=${param.record_cnt}&searchText=${param.searchText}">&nbsp;${item}&nbsp;&nbsp;</a> 
 		 </c:otherwise>	
 		</c:choose>	
 		</c:forEach>
-		<a href="/board/list?page=${pagingCnt}" class="ff">끝</a>
+		<a href="/board/list?page=${pagingCnt}&record_cnt=${param.record_cnt}&searchText=${param.searchText}" class="ff">끝</a>
 	</div>
 	</div>
 
@@ -141,7 +158,7 @@ function changeReCord(){
 }
 
 function detail(i_board, hits){
-	location.href='/board/detail?i_board='+i_board
+	location.href='/board/detail?i_board='+i_board+'&page=${page}&record_cnt=${param.record_cnt}&searchText=${param.searchText}'
 			                     // 키     = value
 }
 

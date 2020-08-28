@@ -30,8 +30,23 @@ public class ToggleLike extends HttpServlet {
 		}
 				
 	String strI_board=request.getParameter("i_board");
-	
 	String strYn_like=request.getParameter("yn_like");
+	
+	
+	
+	String searchText=request.getParameter("searchText");
+	searchText= searchText==null? "":searchText;
+	System.out.println(searchText);
+	
+	
+	
+	int page = MyUtils.getIntParameter(request, "page");
+	page = (page == 0 ? 1 : page);
+	
+	int recordCnt = MyUtils.getIntParameter(request, "record_cnt");
+	recordCnt = (recordCnt == 0 ? 10 : recordCnt);
+	
+		
 
 	//System.out.println(strI_board);
 	//System.out.println(strYn_like);
@@ -43,6 +58,7 @@ public class ToggleLike extends HttpServlet {
 	param.setI_board(i_board);
 	param.setI_user(loginUser.getI_user());
 
+
 	
 	if(yn_like==0) {
 		BoardDAO.insLike(param);
@@ -51,11 +67,12 @@ public class ToggleLike extends HttpServlet {
 	}
 		
 
-	
+	request.setAttribute("page", page); 
 	
 	
 
-	response.sendRedirect("/board/detail?i_board="+i_board);
+	response.sendRedirect("/board/detail?i_board="+i_board+"&page="+page+"&record_cnt="+
+	recordCnt+"&searchText="+searchText);
 	
 	//BoardVO result=BoardDAO.
 	

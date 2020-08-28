@@ -194,8 +194,9 @@ td{padding: 5px}
 		
 		</div>
 		
-		<button id="btn1">
-			<a href="/board/list">목록</a>
+		<id="btn1">
+		<button>
+				<a href="/board/list?page=${param.page}&record_cnt=${param.record_cnt}&searchText=${param.searchText}">목록</a>
 		</button>
 
 
@@ -224,8 +225,7 @@ td{padding: 5px}
 		}
 
 		function like(yn_like) {
-			location.href = "/board/toggleLike?i_board=${data.i_board}&yn_like="
-					+ yn_like
+			location.href = "/board/toggleLike?i_board=${data.i_board}&yn_like="+ yn_like+'&page=${page}&record_cnt=${param.record_cnt}&searchText=${param.searchText}'
 		}
 		
 		function clkCmtMod(i_cmt, cmt){
