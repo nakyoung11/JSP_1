@@ -56,6 +56,8 @@ p{font-size: 15px; font-weight:bold}
 #btn{display:inline-block; margin-left:75%; margin-bottom: 20px;width:50px; height:50px; 
 background: #645574; border-radius: 50%; border:none;}
 #btn:hover{background-color: #5C1D75;}
+#pro_btn{border:none; background:none; margin-left:5px; }
+#pro_btn>a{color:#A360EB; font-weight:bold; font-size:13px}
 .click{cursor:pointer}
 .img{background-image:url()}
 #selFrm{margin:5px 0px 10px 5px; width: 250px; display:inline-block;}
@@ -69,8 +71,8 @@ background: #645574; border-radius: 50%; border:none;}
 <body>
 	<div class="container">
 		 <!--화면띄우기  /2개의 jsp파일이 필요하고/-->
-		<p>${loginUser.nm}님 환영합니다👏👏&nbsp;&nbsp;<a id="logOut" href="/logout">로그아웃</a></p>
-		<button id="btn"><a href="/profile"> 프로필 </a></button>
+		<p>${loginUser.nm}님 환영합니다👏👏&nbsp;&nbsp;<a id="logOut" href="/logout">로그아웃</a><button id="pro_btn"><a href="/profile"> 프로필 </a></button></p>
+
 	
 	
 		<div>
