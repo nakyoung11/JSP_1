@@ -110,7 +110,7 @@ a {
 }
 
 .material-icons {
-   margin-left:46%;
+   margin-left:30%;
 	color: red;
 	cursor: pointer
 }
@@ -124,14 +124,16 @@ td{padding: 5px}
     margin: 10px 5px 5px 5px ; margin-bottom: 10px;width: 500px; height: 25px; outline: none; border:none}
 
 #cmtMod{all: unset; padding-left: 15px; font-size: 13px;	cursor: pointer}
-.cmtNm{width: 55px; font-size: 13px; padding-left: 10px; font-weight: bold;}
+.cmtNm{display:inline-block;width: 80px; font-size: 13px; font-weight: bold; padding-top: 15px} 
 .cmtCmt{font-size:15px}
 .m_dt{padding-left:20px; font-size:15px}
 #cmtMod, #cmtdel{color: rgb(150, 148, 146);}
 #cmtdel{font-size: 13px}
 #cmtMod:hover{color: rgb(252, 231, 41) ;}
 #cmtdel:hover{color: rgb(182, 34, 14) ;}
-
+.pImg{width: 50px; height: 50px; border-radius: 50%; border: 2px solid #aea3b3; margin-right:13px}
+.c_pImg{width: 30px; height: 30px; border-radius: 50%; border: 2px solid #aea3b3; }
+.highlight{font-style:italic;color:red}
 
 </style>
 <body>
@@ -141,6 +143,14 @@ td{padding: 5px}
 				<h2>${data.title}<h2>
 			</div>
 			<div class="user">
+				<c:choose>
+		  			<c:when test="${data.profile_img !=null}">
+		  				<img class="pImg" src="/img/user/${data.i_user}/${data.profile_img}">
+		  			</c:when>
+		  			<c:otherwise>
+		  		 		<img class="pImg"  src="/img/default_profile.jpg">
+		  			</c:otherwise>
+	 			</c:choose>
 				<span class="nm">${data.nm}</span>
 				<span class="dt"> ${data==null? data.r_dt : data.m_dt}&nbsp;
 					&nbsp; ${data.r_dt==data.m_dt? '' : '수정'}</span> <span class="hits">${data.hits}</span>
@@ -176,7 +186,17 @@ td{padding: 5px}
 			<table>
 			<c:forEach items="${cmtList}" var="item">
 			  <tr id="cmtTr">
-			     <td class="cmtNm">${item.nm}</td>
+				<td>
+			 	<c:choose>
+				  		<c:when test="${item.profile_img !=null}">
+				  			<img class="c_pImg" src="/img/user/${loginUser.i_user}/${item.profile_img}">
+				  		</c:when>
+				  		<c:otherwise>
+				  		 	<img class="c_pImg"  src="/img/default_profile.jpg">
+		  				 </c:otherwise>
+	 	        </c:choose>
+			     </td>
+			      <td class="cmtNm">${item.nm}</td>
 			     <td class="cmtCmt">${item.cmt}</td>
 			     <td class="m_dt" width=150px>${item.r_dt==item.m_dt? item.r_dt:item.m_dt}</td>
 			     <c:if test="${loginUser.i_user==item.i_user}">
@@ -194,9 +214,9 @@ td{padding: 5px}
 		
 		</div>
 		
-		<id="btn1">
-		<button>
-				<a href="/board/list?page=${param.page}&record_cnt=${param.record_cnt}&searchText=${param.searchText}">목록</a>
+		
+		<button id="btn1">
+			<a href="/board/list?page=${param.page}&record_cnt=${param.record_cnt}&searchText=${param.searchText}&searchType=${param.searchType}">목록</a>
 		</button>
 
 
@@ -225,7 +245,12 @@ td{padding: 5px}
 		}
 
 		function like(yn_like) {
-			location.href = "/board/toggleLike?i_board=${data.i_board}&yn_like="+ yn_like+'&page=${page}&record_cnt=${param.record_cnt}&searchText=${param.searchText}'
+		location.href='/board/toggleLike?page=${param.page}&record_cnt=${param.record_cnt}&searchType=${param.searchType}&searchText=${param.searchText}&i_board=${data.i_board}&yn_like=' + yn_like
+    	}
+    
+        function submitDel() {
+
+			
 		}
 		
 		function clkCmtMod(i_cmt, cmt){

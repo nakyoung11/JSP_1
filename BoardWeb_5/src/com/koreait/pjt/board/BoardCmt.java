@@ -47,6 +47,19 @@ public class BoardCmt extends HttpServlet {
 		String strI_board =request.getParameter("i_board");
 		String cmt=request.getParameter("cmt");
 		
+		String searchType= request.getParameter("searchType");
+		searchType=(searchType==null)? "a":searchType;
+		int page = MyUtils.getIntParameter(request, "page");
+		page = (page == 0 ? 1 : page);
+		
+		int recordCnt = MyUtils.getIntParameter(request, "record_cnt");
+		recordCnt = (recordCnt == 0 ? 10 : recordCnt);	
+			
+			
+		String searchText=request.getParameter("searchText");
+		searchText= searchText==null? "":searchText;
+		
+		
 		System.out.println(strI_cmt);
 		
 		
@@ -77,7 +90,10 @@ public class BoardCmt extends HttpServlet {
 		
 		
 		
-		response.sendRedirect("/board/detail?i_board="+strI_board);
+		String target = String.format("/board/detail?i_board=%s&page=%s&record_cnt=%s&searchText=%s&searchType=%s"
+				, strI_board, page, recordCnt, searchText, searchType);
+
+		response.sendRedirect(target);
 		
 		
 	}

@@ -21,9 +21,42 @@ public class BoardVO {
 	private int eidx;
 	private int sidx;
 	private String searchText;
+	private String profile_img;
+	private int cnt;
+	private int cntCmt;
+	private String searchType;
 	
 	
 	
+	
+	public String getSearchType() {
+		return searchType;
+	}
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
+	public int getCnt() {
+		return cnt;
+	}
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+	public int getCntCmt() {
+		return cntCmt;
+	}
+	public void setCntCmt(int cntCmt) {
+		this.cntCmt = cntCmt;
+	}
+
+	
+	
+	
+	public String getProfile_img() {
+		return profile_img;
+	}
+	public void setProfile_img(String profile_img) {
+		this.profile_img = profile_img;
+	}
 	public String getSearchText() {
 		return searchText;
 	}

@@ -1,6 +1,7 @@
 package com.koreait.pjt.board;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -46,6 +47,8 @@ public class ToggleLike extends HttpServlet {
 	int recordCnt = MyUtils.getIntParameter(request, "record_cnt");
 	recordCnt = (recordCnt == 0 ? 10 : recordCnt);
 	
+	String searchType=request.getParameter("searchType");
+	searchText = URLEncoder.encode(searchText, "UTF-8");
 		
 
 	//System.out.println(strI_board);
@@ -71,8 +74,10 @@ public class ToggleLike extends HttpServlet {
 	
 	
 
-	response.sendRedirect("/board/detail?i_board="+i_board+"&page="+page+"&record_cnt="+
-	recordCnt+"&searchText="+searchText);
+	String target = String.format("/board/detail?i_board=%s&page=%s&record_cnt=%s&searchText=%s&searchType=%s"
+			, strI_board, page, recordCnt, searchText, searchType);
+
+	response.sendRedirect(target);
 	
 	//BoardVO result=BoardDAO.
 	

@@ -56,9 +56,13 @@ public class BoardRegmodSer extends HttpServlet {
 		System.out.println(strI_board);
 		String title=request.getParameter("title");
 		String ctnt=request.getParameter("ctnt");
+		
+		String filter1=scriptFilter(ctnt);
+		String filter2=swearWordFilter(filter1);
+		
 		BoardVO param= new BoardVO();
 		param.setTitle(title);
-		param.setCtnt(ctnt);
+		param.setCtnt(filter2);
 		param.setI_user(loginUser.getI_user());
 		
 		if(strI_board.equals("")) {
@@ -67,7 +71,7 @@ public class BoardRegmodSer extends HttpServlet {
 		response.sendRedirect("/board/list");
 		
 		}else{
-//수정			
+			//수정			
 			int i_board=Integer.parseInt(strI_board);		
 			param.setI_board(i_board);
 			int result=BoardDAO.updateBoard(param);
@@ -75,6 +79,29 @@ public class BoardRegmodSer extends HttpServlet {
 		}
 				
 			
+		}
+	//script 필터
+	
+		private String scriptFilter(String ctnt) {
+			String[] filters= {"<script>","</script>"};
+			String[] filterResults= {"&lt;script&gt;","&lt;/script&gt"};
+			
+			String result=ctnt;
+			for(int i=0; i<filters.length;i++) {
+				result=result.replace(filters[i], filterResults[i]);
+			}
+			return result;
+		}
+	//욕필터	
+		private String swearWordFilter(String ctnt) {
+			String[] filters= {"개새끼","미친년"};
+			String[] filterResults= {"고운말!","!바른말!"};
+			
+			String result=ctnt;
+			for(int i=0; i<filters.length;i++) {
+				result=result.replace(filters[i], filterResults[i]);
+			}
+			return result;
 		}
 			
 	}

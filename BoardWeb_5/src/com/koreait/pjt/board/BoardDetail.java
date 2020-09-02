@@ -33,9 +33,14 @@ public class BoardDetail extends HttpServlet {
 		
 		String strI_board= request.getParameter("i_board");
 		int i_board=Integer.parseInt(strI_board);
-
-		
-		
+		String searchType= request.getParameter("searchType");
+		  searchType=(searchType==null)? "a":searchType;
+		 System.out.println(searchType);
+			String searchText=request.getParameter("searchText");
+			searchText= searchText==null? "":searchText;
+		System.out.println(searchText);
+		System.out.println(searchType);
+			
 		//단독으로 조회수 올리기 방지
 		ServletContext application=getServletContext(); //어플리케이션 객체 얻기 (이 방법뿐!)
 		//서버가 켜질때 1개만 만들어져!  //내장객체 4개는 get // set !
@@ -56,7 +61,25 @@ public class BoardDetail extends HttpServlet {
 		
 		
 		BoardVO items= BoardDAO.selBoard(param);
-
+		
+		System.out.println("board VO");
+		System.out.println(items.getCtnt());
+		
+		if("a".equals(searchType)&&!"".equals(searchType)||"b".equals(searchType)||"c".equals(searchType)) {
+			String title= items.getTitle();
+			title=title.replace(searchText, "<span class=\"highlight\">"+searchText+"</span>");
+			items.setTitle(title);
+			String ctnt= items.getCtnt();
+			ctnt=ctnt.replace(searchText, "<span class=\"highlight\">"+searchText+"</span>");
+			items.setCtnt(ctnt);}
+		
+//		
+//		if("b".equals(searchType)&&!"".equals(searchType)||"c".equals(searchType)) {
+//			String ctnt= items.getCtnt();
+//			ctnt=ctnt.replace(searchText, "<span class=\"highlight\">"+searchText+"</span>");
+//			items.setCtnt(ctnt);}
+		
+			
 		
 		request.setAttribute("data", items);
 		

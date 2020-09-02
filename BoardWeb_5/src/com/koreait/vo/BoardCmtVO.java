@@ -10,6 +10,16 @@ public class BoardCmtVO {
 	private String m_dt;
 	private String nm;
 	private int cmtCount;
+	private String profile_img;
+	
+	
+	
+	public String getProfile_img() {
+		return profile_img;
+	}
+	public void setProfile_img(String profile_img) {
+		this.profile_img = profile_img;
+	}
 	
 	
 	public int getCmtCount() {

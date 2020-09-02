@@ -16,6 +16,7 @@ body{width:100%}
 img{width: 200px; height: 200px; border-radius: 50%; border:1px solid black }
 .container{width:50%; margin: 30px auto;}
 .profile{margin:5px auto}
+.pImg{width: 30px; height: 30px; border-radius: 50%; border: 1px solid #aea3b3; margin-right:13px}
 </style>
 <body>
   <div class="container">

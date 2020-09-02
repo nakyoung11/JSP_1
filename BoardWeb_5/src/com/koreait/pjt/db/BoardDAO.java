@@ -7,7 +7,6 @@ import java.util.*;
 
 import com.koreait.vo.BoardLikeVO;
 import com.koreait.vo.BoardVO;
-
 import javafx.css.PseudoClass;
 
 public class BoardDAO {
@@ -15,17 +14,64 @@ public class BoardDAO {
 		final List<BoardVO> list = new ArrayList();
 		// 레퍼런스 상수는 주소값을 고정!! 객체에 추가를 막는것은 아니다.
 
-		String sql =" SELECT A.*FROM "
-				+" ( SELECT ROWNUM as RNUM, A.*FROM "
-				+" ( SELECT A.i_board, A.title, A.hits, B.nm, "
-				+" TO_CHAR(A.r_dt, 'YYYY/MM/DD HH24:MI') as r_dt, "
-				+" TO_CHAR(A.m_dt, 'YYYY/MM/DD') as m_dt FROM t_board5 A "
-				+" inner Join t_user B "
-				+" on A.i_user = B.i_user " 
-				+" WHERE A.title like ? " 
-			    +" ORDER BY i_board DESC "
-				+" )A WHERE ROWNUM <= ?"
-			    +" )A WHERE A.RNUM > ?" ;
+		String sql =
+			" SELECT A.* FROM  " + 
+			" 	( SELECT ROWNUM as RNUM, A.* FROM " + 
+			" 		( SELECT A.i_board, A.title, A.hits, A.i_user, D.nm, D.profile_img, nvl(B.cnt, 0) as cnt, " + 
+			" 			 nvl(C.cmtCnt, 0) as cmtCnt, DECODE(E.i_board, null, 0, 1) as yn_like, " + 
+			"			 TO_CHAR(A.r_dt, 'YYYY/MM/DD HH24:MI') as r_dt, " + 
+			" 			 TO_CHAR(A.m_dt, 'YYYY/MM/DD') as m_dt FROM t_board5 A  " + 
+			" 		     inner Join t_user D  " + 
+			" 			 on A.i_user = D.i_user " + 
+			" 			 LEFT JOIN( " + 
+			" 			 	SELECT i_board, count(i_board) as cnt FROM t_board5_like group by i_board " + 
+			" 				) B  " + 
+			" 			 ON A.i_board = B.i_board " + 
+			" 			 LEFT JOIN( " + 
+			" 				SELECT i_board, count(i_board) as cmtCnt FROM t_board5_cmt group by i_board " + 
+			" 				)C " + 
+			" 			 ON A.i_board=C.i_board " + 
+			" 			 LEFT JOIN( " + 
+			" 				SELECT i_board FROM t_board5_like WHERE i_user= ? " + 
+			" 				)E " + 
+			" 			 ON A.i_board=E.I_board " + 
+			" 			 WHERE " ;
+		
+			switch(param.getSearchType()) {
+			case "a":
+				sql+= " A.title like ? ";
+				break;
+			case "b":
+				sql+= " A.ctnt like ? ";
+				break;
+			case "c":
+				sql+= " (A.ctnt like ? or A.title like ?) ";
+				break;
+			}
+		
+			sql +=" 			 ORDER BY i_board DESC " + 
+			" 		)A WHERE ROWNUM <= ? " + 
+			" )A WHERE A.RNUM > ? ";
+							
+				
+				
+				
+				
+				
+				
+				
+				
+//				" SELECT A.*FROM "
+//				+" ( SELECT ROWNUM as RNUM, A.*FROM "
+//				+" ( SELECT A.i_board, A.title, A.hits, B.nm, B.profile_img, "
+//				+" TO_CHAR(A.r_dt, 'YYYY/MM/DD HH24:MI') as r_dt, "
+//				+" TO_CHAR(A.m_dt, 'YYYY/MM/DD') as m_dt FROM t_board5 A "
+//				+" inner Join t_user B "
+//				+" on A.i_user = B.i_user " 
+//				+" WHERE A.title like ? " 
+//			    +" ORDER BY i_board DESC "
+//				+" )A WHERE ROWNUM <= ?"
+//			    +" )A WHERE A.RNUM > ?" ;
 				
 				
 			/*	" SELECT A.i_board, A.title, A.hits, B.nm, "
@@ -39,9 +85,14 @@ public class BoardDAO {
 
 			@Override
 			public void prepared(PreparedStatement ps) throws SQLException {
-				ps.setNString(1, param.getSearchText());
-				ps.setInt(2, param.getEidx());
-				ps.setInt(3, param.getSidx());
+				int seq=1;
+				ps.setInt(seq, param.getI_user());
+				ps.setNString(++seq, param.getSearchText());
+				if("c".equals(param.getSearchType())){
+					ps.setNString(++seq, param.getSearchText());
+				}	
+				ps.setInt(++seq, param.getEidx());
+				ps.setInt(++seq, param.getSidx());
 			}
 
 			@Override
@@ -53,6 +104,14 @@ public class BoardDAO {
 					String nm = rs.getNString("nm");
 					String r_dt = rs.getNString("r_dt");
 					String m_dt = rs.getNString("m_dt");
+					String profile_img=rs.getNString("profile_img");
+					int yn_like=rs.getInt("yn_like");
+					int cnt =rs.getInt("cnt");
+					int cntCmt=rs.getInt("cmtCnt");
+					int i_user=rs.getInt("i_user");
+					
+					
+				
 
 					BoardVO vo = new BoardVO();
 					vo.setI_board(i_board);
@@ -61,6 +120,12 @@ public class BoardDAO {
 					vo.setNm(nm);
 					vo.setR_dt(r_dt);
 					vo.setM_dt(m_dt);
+					vo.setProfile_img(profile_img);
+					vo.setCnt(cnt);
+					vo.setCntCmt(cntCmt);
+					vo.setYn_like(yn_like);
+					vo.setI_user(i_user);
+				
 
 					list.add(vo);
 				}
@@ -96,7 +161,7 @@ public class BoardDAO {
 	public static BoardVO selBoard(BoardVO param) {
 		BoardVO vo = new BoardVO();
 
-		String sql = " SELECT A.i_board, A.title, A.ctnt, A.hits, B.nm, " 
+		String sql = " SELECT A.i_board, A.title, A.ctnt, A.hits, B.nm, B.profile_img," 
 		        + " A.r_dt, A.m_dt, A.hits," 
 		        + " A.i_user, DECODE(C.i_user, null, 0, 1)as yn_like,"
 		        + " (SELECT COUNT(*) FROM t_board5_like WHERE i_board= ?) as count,"
@@ -134,6 +199,8 @@ public class BoardDAO {
 					int yn_like=rs.getInt("yn_like");
 					int count = rs.getInt("count");
 					int cmtCount=rs.getInt("cmtCount");
+					String profile_img=rs.getNString("profile_img");
+					
 					
 
 					vo.setI_board(i_board);
@@ -147,6 +214,7 @@ public class BoardDAO {
 					vo.setYn_like(yn_like);
 					vo.setCount(count);
 					vo.setCmtCount(cmtCount);
+					vo.setProfile_img(profile_img);
 				}
 				return 1;
 			}
@@ -252,8 +320,21 @@ public class BoardDAO {
 
 	public static int selPagingCnt(BoardVO param) {
 		
-		String sql=" SELECT ceil(count(i_board)/?) FROM t_board5 "
-				  + " WHERE title like ? ";
+		String sql=" SELECT ceil(count(i_board)/ ?) FROM t_board5  WHERE ";
+		
+		switch(param.getSearchType()) {
+		case "a":
+			sql+= " title like ? ";
+			break;
+		case "b":
+			sql+= " ctnt like ? ";
+			break;
+		case "c":
+			sql+= " (ctnt like ? or title like ?) ";
+			break;
+		}
+	
+	
 		
 		return JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 			
@@ -261,6 +342,9 @@ public class BoardDAO {
 			public void prepared(PreparedStatement ps) throws SQLException {
 				ps.setInt(1, param.getRecord_cnt());
 				ps.setNString(2, param.getSearchText());
+				if("c".equals(param.getSearchType())) {
+					ps.setNString(3, param.getSearchText());
+				}
 			}
 			
 			@Override
