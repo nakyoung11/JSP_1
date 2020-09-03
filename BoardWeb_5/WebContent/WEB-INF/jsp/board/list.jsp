@@ -120,7 +120,7 @@ select{ height:25px; border-radius: 10px ;padding: 3px }
 	<table>
 		<tr>
 			<th>NO</th>
-			<th width="400px">제목</th>
+			<th width="350px">제목</th>
 			<th id="nm">작성자</th>
 			<th>조회수</th>
 			<th>좋아요</th>
@@ -207,7 +207,7 @@ function changeType(){
 }
 
 function detail(i_board, hits){
-	location.href='/board/detail?i_board='+i_board+'&page=${page}&record_cnt=${param.record_cnt}&searchText=${param.searchText}&searchType=${param.searchType}'
+	location.href='/board/detail?i_board='+i_board+'&page=${page}&record_cnt=${param.record_cnt}&searchText=${param.searchText}&searchType=${searchType}'
 			                     // 키     = value
 }
 

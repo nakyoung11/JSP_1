@@ -146,7 +146,7 @@ public class UserDAO {
 			sb.append(" '");
 		}
 		
-		sb.append(" WHERE i_user = ");
+		sb.append(" WHERE i_user =  ");
 		sb.append(param.getI_user());
 		
 		return JdbcTemplate.executeUpdate(sb.toString(), new JdbcUpdateInterface() {
@@ -154,7 +154,7 @@ public class UserDAO {
 			@Override
 			public void update(PreparedStatement ps) throws SQLException {
 
-				
+
 			}
 		});	
 	}

@@ -159,68 +159,57 @@ public class BoardDAO {
 
 	///////////////////////// 상세글
 	public static BoardVO selBoard(BoardVO param) {
-		BoardVO vo = new BoardVO();
-
+		BoardVO result = new BoardVO();
+		result.setI_board(param.getI_board());
 		String sql = " SELECT A.i_board, A.title, A.ctnt, A.hits, B.nm, B.profile_img," 
 		        + " A.r_dt, A.m_dt, A.hits," 
-		        + " A.i_user, DECODE(C.i_user, null, 0, 1)as yn_like,"
-		        + " (SELECT COUNT(*) FROM t_board5_like WHERE i_board= ?) as count,"
-		        + " (SELECT COUNT(*) FROM t_board5_cmt WHERE i_board= ?) as cmtCount "
+		        + " A.i_user, DECODE(C.i_user, null, 0, 1) as yn_like,"
+		        + " nvl(D.cnt, 0) as like_cnt "
 		        + " FROM t_board5 A "
 				+ " inner Join t_user B" 
 		        + " on A.i_user = B.i_user "
 		        + " LEFT JOIN t_board5_like C"
 		        + " ON A.i_board=C.i_board"
 		        + " AND C.i_user= ?"
+		        + " LEFT JOIN( "
+		        + "		SELECT i_board, count(i_board) as cnt FROM t_board5_like "	 
+		        + "		WHERE i_board= ?"	
+		        + " 	GROUP BY i_board"
+		        + " ) D"
+		        + " on A.i_board = D.i_board "
 				+ " WHERE A.i_board= ? ";  
 
 		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 
 			@Override
 			public void prepared(PreparedStatement ps) throws SQLException {
-				ps.setInt(1, param.getI_board());
-				ps.setInt(2, param.getI_board());
-				ps.setInt(3, param.getI_user());
-				ps.setInt(4, param.getI_board());
+				ps.setInt(1, param.getI_user());
+				ps.setInt(2, param.getI_board());				
+				ps.setInt(3, param.getI_board());	
+		
 			}
 
 			@Override
 			public int executeQuery(ResultSet rs) throws SQLException {
-				int rsult = 0;
-				if (rs.next()) {
-					int i_board = rs.getInt("i_board");
-					String title = rs.getNString("title");
-					int hits = rs.getInt("hits");
-					String nm = rs.getNString("nm");
-					String ctnt = rs.getNString("ctnt");
-					String r_dt = rs.getNString("r_dt");
-					String m_dt=rs.getNString("m_dt");
-					int i_user = rs.getInt("i_user"); //작성자 
-					int yn_like=rs.getInt("yn_like");
-					int count = rs.getInt("count");
-					int cmtCount=rs.getInt("cmtCount");
-					String profile_img=rs.getNString("profile_img");
-					
-					
 
-					vo.setI_board(i_board);
-					vo.setTitle(title);
-					vo.setHits(hits);
-					vo.setNm(nm);
-					vo.setCtnt(ctnt);
-					vo.setR_dt(r_dt);
-					vo.setI_user(i_user);
-					vo.setM_dt(m_dt);
-					vo.setYn_like(yn_like);
-					vo.setCount(count);
-					vo.setCmtCount(cmtCount);
-					vo.setProfile_img(profile_img);
+				if (rs.next()) {
+					result.setProfile_img(rs.getNString("profile_img"));
+					result.setI_user(rs.getInt("i_user")); //작성자 i_user
+					result.setNm(rs.getNString("nm"));
+					result.setTitle(rs.getNString("title"));
+					result.setCtnt(rs.getNString("ctnt"));
+					result.setHits(rs.getInt("hits"));
+					result.setR_dt(rs.getNString("r_dt"));
+					result.setYn_like(rs.getInt("yn_like"));
+					result.setLike_cnt(rs.getInt("like_cnt"));
+					
 				}
+					
 				return 1;
 			}
 
 		});
-		return vo;
+		return result;
 
 	}
 //////////////////////////////////
@@ -297,14 +286,14 @@ public class BoardDAO {
 		
 	
 		public static int dleLike(BoardVO param) {
-		String sql=" DELETE FROM t_board5_like WHERE i_board=? ";
+		String sql= " DELETE FROM t_board5_like WHERE i_user = ? AND i_board = ? ";
 			return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
 
 				@Override
 				public void update(PreparedStatement ps) throws SQLException {
-			
-					ps.setInt(1, param.getI_board());
-				
+					
+					ps.setInt(1, param.getI_user());
+					ps.setInt(2, param.getI_board());
 
 				}
 			});
@@ -342,6 +331,7 @@ public class BoardDAO {
 			public void prepared(PreparedStatement ps) throws SQLException {
 				ps.setInt(1, param.getRecord_cnt());
 				ps.setNString(2, param.getSearchText());
+				
 				if("c".equals(param.getSearchType())) {
 					ps.setNString(3, param.getSearchText());
 				}
@@ -360,6 +350,40 @@ public class BoardDAO {
 		});
 		
 	}
+	
+	//////////////////////////////////////////
+	public static List<BoardVO> selBoardLikeList(int i_board){
+		List<BoardVO>list= new ArrayList();
+		String sql= " SELECT "  
+				+ " B.i_user, B.nm, B.profile_img "
+				+" FROM t_board5_like A "
+				+" INNER JOIN t_user B "  
+				+" ON A.i_user=B.i_user " 
+				+" WHERE A.i_board= ? "  
+				+" ORDER BY A.R_dt ASC";
+		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
+			
+			@Override
+			public void prepared(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, i_board);
+				
+			}
+			
+			@Override
+			public int executeQuery(ResultSet rs) throws SQLException {
+				while(rs.next()) {
+					BoardVO vo = new BoardVO();
+					vo.setI_user(rs.getInt("i_user"));
+					vo.setNm(rs.getNString("nm"));
+					vo.setProfile_img(rs.getNString("profile_img"));
+					list.add(vo);
+				}
+				return 1;
+			}
+		});
+		return list;
+	}
+	
 	
 	
 	

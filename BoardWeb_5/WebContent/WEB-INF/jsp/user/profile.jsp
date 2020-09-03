@@ -46,10 +46,22 @@ img{width: 200px; height: 200px; border-radius: 50%; border:1px solid black }
   	<div>이름:${data.nm}</div>
   	<div>이메일:${data.email}</div>
   	<div>가입일시:${data.r_dt}</div>
+  	<a href="/changePw"><button >비밀번호 변경</button></a>
   
   </div>
   
   </div>
+  <script type="text/javascript">
+  
+  
+	var proc = '${param.proc}'
+		switch(proc) {
+		case '1':
+			alert('비밀번호를 변경하였습니다.')
+			break;
+		}
+  
+  </script>
   
 </body>
 </html>

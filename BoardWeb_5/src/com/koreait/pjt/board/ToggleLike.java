@@ -47,7 +47,9 @@ public class ToggleLike extends HttpServlet {
 	int recordCnt = MyUtils.getIntParameter(request, "record_cnt");
 	recordCnt = (recordCnt == 0 ? 10 : recordCnt);
 	
-	String searchType=request.getParameter("searchType");
+	  String searchType= request.getParameter("searchType");
+			searchType=(searchType==null)? "a":searchType;
+	
 	searchText = URLEncoder.encode(searchText, "UTF-8");
 		
 

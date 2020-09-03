@@ -103,17 +103,19 @@ a {
 	display: inline-block;
 }
 
-.count {
-	
-	font-size: 7px;
 
-}
 
 .material-icons {
    margin-left:30%;
 	color: red;
 	cursor: pointer
 }
+
+.material-icons:hover ~ #likeList{
+	display: block;
+
+}
+
 
 .cmtlist{margin:5px}
 
@@ -134,6 +136,39 @@ td{padding: 5px}
 .pImg{width: 50px; height: 50px; border-radius: 50%; border: 2px solid #aea3b3; margin-right:13px}
 .c_pImg{width: 30px; height: 30px; border-radius: 50%; border: 2px solid #aea3b3; }
 .highlight{font-style:italic;color:red}
+.count {	
+	font-size: 7px;
+	cursor: pointer;
+
+}
+.count:hover + #likeList{
+	display: block;
+
+}
+#likeList:hover{
+	display: block;
+}
+
+
+#likeList{
+
+background-color: #DDECFF;
+border-radius: 30px;
+position: absolute;
+width: 150px;
+height: 300px;
+left:60%;
+display:none;
+padding:15px;
+
+}
+
+#userLike{display: flex; 
+ align-items: center;}
+
+#userLike img{width: 30px; height: 30px ;margin: 5px}
+
+.like_nm{font-size: smaller;}
 
 </style>
 <body>
@@ -163,15 +198,35 @@ td{padding: 5px}
 				<c:if test="${data.yn_like==1}">
 					<span class="material-icons" onclick="like(1)">favorite</span>
 				</c:if>
-				<span class="count">종아요 ${data.count}&nbsp; 댓글 ${data.cmtCount}</span> 
-
-
-			</div>
+				
+				
+				<span class="count">종아요 ${data.like_cnt}</span>
+				
+				<div id="likeList">	
+					<c:forEach items="${list}" var="item">
+					<div id="userLike">
+					<c:choose>
+				  		<c:when test="${item.profile_img !=null}">
+				  			<img class="pImg" src="/img/user/${item.i_user}/${item.profile_img}">
+				  		</c:when>
+				  		<c:otherwise>
+				  		 	<img class="pImg"  src="/img/default_profile.jpg">
+				  		</c:otherwise>
+	 				</c:choose>
+					
+					
+					
+					 <span class="like_nm"> ${item.nm}</span></div>	
+					</c:forEach>
+					</div>
+				</div>
+		
 			<hr>
 			<div class="ctnt">${data.ctnt}</div>
 			
+				
 			<div class="cmt">
-		
+		<span> 댓글 ${data.cmtCount}</span> 
 		<form id="cmtFrm" action="/board/cmt" method="post">
 		<input type="hidden" name="i_cmt" value="0"><!--수정: i_cmt값주고,  -->
 		                          <!-- 등록과 수정은 value의 값으로 구분(0등록 1수정 -->
@@ -189,7 +244,7 @@ td{padding: 5px}
 				<td>
 			 	<c:choose>
 				  		<c:when test="${item.profile_img !=null}">
-				  			<img class="c_pImg" src="/img/user/${loginUser.i_user}/${item.profile_img}">
+				  			<img class="c_pImg" src="/img/user/${item.i_user}/${item.profile_img}">
 				  		</c:when>
 				  		<c:otherwise>
 				  		 	<img class="c_pImg"  src="/img/default_profile.jpg">

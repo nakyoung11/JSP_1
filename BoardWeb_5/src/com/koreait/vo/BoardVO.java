@@ -11,7 +11,7 @@ public class BoardVO {
 	private String user_id;
 	private String nm;
 	private int yn_like;
-	private int count;
+	
 	private int i_cmt;
 	private String cmt;
 	private String c_r_dt;
@@ -24,7 +24,17 @@ public class BoardVO {
 	private String profile_img;
 	private int cnt;
 	private int cntCmt;
-	private String searchType;
+	private String searchType;	
+	private int like_cnt;
+	
+	
+	public int getLike_cnt() {
+		return like_cnt;
+	}
+	public void setLike_cnt(int like_cnt) {
+		this.like_cnt = like_cnt;
+	}
+
 	
 	
 	
@@ -114,15 +124,6 @@ public class BoardVO {
 		this.c_m_dt = c_m_dt;
 	}
 
-	
-	
-	
-	public int getCount() {
-		return count;
-	}
-	public void setCount(int count) {
-		this.count = count;
-	}
 	public int getYn_like() {
 		return yn_like;
 	}

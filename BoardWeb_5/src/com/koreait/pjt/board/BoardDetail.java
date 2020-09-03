@@ -1,6 +1,7 @@
 package com.koreait.pjt.board;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -30,14 +31,22 @@ public class BoardDetail extends HttpServlet {
 			response.sendRedirect("/login");
 			return;
 		}
+		int page = MyUtils.getIntParameter(request, "page");
+		page = (page == 0 ? 1 : page);
 		
 		String strI_board= request.getParameter("i_board");
 		int i_board=Integer.parseInt(strI_board);
-		String searchType= request.getParameter("searchType");
-		  searchType=(searchType==null)? "a":searchType;
-		 System.out.println(searchType);
-			String searchText=request.getParameter("searchText");
-			searchText= searchText==null? "":searchText;
+		
+		int recordCnt = MyUtils.getIntParameter(request, "record_cnt");
+		recordCnt = (recordCnt == 0 ? 10 : recordCnt);
+		
+		  String searchType= request.getParameter("searchType");
+			searchType=(searchType==null)? "a":searchType;
+	
+		String searchText=request.getParameter("searchText");
+		searchText= searchText==null? "":searchText;
+		searchText = URLEncoder.encode(searchText, "UTF-8");
+	
 		System.out.println(searchText);
 		System.out.println(searchType);
 			
@@ -54,24 +63,19 @@ public class BoardDetail extends HttpServlet {
 		    //같은 키값(read_10)으로 나의 Pk를 받아! 그리고 새로고침했을때 넘어가는 것은 나의pK값이 넘어가서 null이 아님
 		}
 		//끝 :누가 내글을 마지막으로 읽었는지를 기록(취약점: 두사람이 새로고침을 한다면 조회수가 올라감)
-				
+		
+		
+		//게시글 보기 ! 
 		BoardVO param= new BoardVO();
 		param.setI_board(i_board);
 		param.setI_user(loginUser.getI_user());
-		
-		
 		BoardVO items= BoardDAO.selBoard(param);
 		
-		System.out.println("board VO");
-		System.out.println(items.getCtnt());
+		System.out.println(param.getLike_cnt());
 		
-		if("a".equals(searchType)&&!"".equals(searchType)||"b".equals(searchType)||"c".equals(searchType)) {
-			String title= items.getTitle();
-			title=title.replace(searchText, "<span class=\"highlight\">"+searchText+"</span>");
-			items.setTitle(title);
-			String ctnt= items.getCtnt();
-			ctnt=ctnt.replace(searchText, "<span class=\"highlight\">"+searchText+"</span>");
-			items.setCtnt(ctnt);}
+		List<BoardVO>list=BoardDAO.selBoardLikeList(i_board);
+		
+		request.setAttribute("list", list);
 		
 //		
 //		if("b".equals(searchType)&&!"".equals(searchType)||"c".equals(searchType)) {
