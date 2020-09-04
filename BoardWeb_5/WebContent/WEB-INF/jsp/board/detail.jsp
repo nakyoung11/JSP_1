@@ -157,7 +157,7 @@ border-radius: 30px;
 position: absolute;
 width: 150px;
 height: 300px;
-left:60%;
+left:53%;
 display:none;
 padding:15px;
 
@@ -226,7 +226,7 @@ padding:15px;
 			
 				
 			<div class="cmt">
-		<span> 댓글 ${data.cmtCount}</span> 
+		<span> </span> 
 		<form id="cmtFrm" action="/board/cmt" method="post">
 		<input type="hidden" name="i_cmt" value="0"><!--수정: i_cmt값주고,  -->
 		                          <!-- 등록과 수정은 value의 값으로 구분(0등록 1수정 -->
@@ -257,7 +257,7 @@ padding:15px;
 			     <c:if test="${loginUser.i_user==item.i_user}">
 			     <td width=60px><button id= "cmtMod" onclick="clkCmtMod(${item.i_cmt},'${item.cmt}')">수정</button></td>
 			     <td width=40px><a id="cmtdel" onclick="clkDel(${item.i_cmt})">삭제</a></td>
-			    
+	   
 			     </c:if>
 			     
 		     </tr>
