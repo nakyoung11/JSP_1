@@ -26,6 +26,9 @@ public class HandlerMapper {
 				return userCon.login(request);
 			case "join":
 				return userCon.join(request);
+			case "joinProc":
+				return userCon.joinProc(request);
+			
 			}
 		
 

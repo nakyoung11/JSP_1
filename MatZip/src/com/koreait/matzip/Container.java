@@ -45,6 +45,16 @@ public class Container extends HttpServlet {
 	private void proc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String temp = mapper.nav(request);
 		
+		String isRedirect = temp.substring(0,temp.indexOf("/"));
+		
+		if(temp.indexOf("/") >=0) {
+		
+			if("redirect:".equals(isRedirect)){
+				response.sendRedirect(temp.substring(temp.indexOf("/")));	
+				return;
+				}
+		}
+		
 		switch(temp) {
 		case "405":
 			temp ="/WEB-INF/view/error.jsp";
