@@ -14,9 +14,9 @@ public class HandlerMapper {
 
 	public String nav(HttpServletRequest request) {
 		String[] uriArr = request.getRequestURI().split("/");
-		
+
 		if (uriArr.length < 3) {
-			return "405"; //Error
+			return "405"; // Error
 		}
 
 		switch (uriArr[1]) {
@@ -28,10 +28,12 @@ public class HandlerMapper {
 				return userCon.join(request);
 			case "joinProc":
 				return userCon.joinProc(request);
+			case "loginProc":
+				return userCon.loginProc(request);
+			case "ajaxIdChk":
+				return userCon.ajaxIdChk(request);
 			
 			}
-		
-
 		}
 
 		return "404";

@@ -6,10 +6,16 @@ public class UserVO {
 	private String user_pw;
 	private String nm;
 	private String salt;
-	private String priofile_img;
+	private String profile_img;
 	private String r_dt;
 	private String m_dt;
 	
+		public String getProfile_img() {
+		return profile_img;
+	}
+	public void setProfile_img(String profile_img) {
+		this.profile_img = profile_img;
+	}
 	
 	public int getI_user() {
 		return i_user;
@@ -41,12 +47,7 @@ public class UserVO {
 	public void setSalt(String salt) {
 		this.salt = salt;
 	}
-	public String getPriofile_img() {
-		return priofile_img;
-	}
-	public void setPriofile_img(String priofile_img) {
-		this.priofile_img = priofile_img;
-	}
+
 	public String getR_dt() {
 		return r_dt;
 	}
