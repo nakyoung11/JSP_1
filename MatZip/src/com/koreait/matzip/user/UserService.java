@@ -22,7 +22,7 @@ public class UserService {
 		return dao.join(param);
 	}
 
-	// result (0):dpfj (1)로그인 성공 (2)아이디 없음 (3)비밀번호 틀림
+	// result  (1)로그인 성공 (2)아이디 없음 (3)비밀번호 틀림
 	public int login(UserVO param) {
 		int result = 0;
 
@@ -34,7 +34,11 @@ public class UserService {
 			String salt = dbResult.getSalt();
 			String encryptPw = SecurityUtils.getEncrypt(param.getUser_pw(), salt);
 			
-			if (encryptPw.equals(dbResult.getUser_pw())) {
+			if (encryptPw.equals(dbResult.getUser_pw())) {		
+				param.setUser_pw(null);
+				param.setI_user(dbResult.getI_user());
+				param.setNm(dbResult.getNm());
+				param.setProfile_img(dbResult.getProfile_img());
 				result = 1; //로그인 완료
 			} else {
 				result = 3; //비밀번호

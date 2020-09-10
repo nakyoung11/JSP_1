@@ -1,6 +1,7 @@
 package com.koreait.matzip.user;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.koreait.matzip.Const;
 import com.koreait.matzip.ViewRef;
@@ -36,6 +37,14 @@ public class UserController {
 		request.setAttribute(Const.VIEW, "user/login"); // 템플릿에서 어떤파일을 열까?
 		return ViewRef.TEMP_DEFAULT;// 어떤 템플릿을 열까?
 	}
+	
+	public String logout(HttpServletRequest request) {
+		HttpSession hs= request.getSession();
+		hs.invalidate();		
+		return "redirect:/user/login";
+	}
+	
+	
 
 	public String join(HttpServletRequest request) {
 		request.setAttribute(Const.TITLE, "회원가입");
@@ -69,9 +78,11 @@ public class UserController {
 		int result = service.login(param);
 
 		if (result == 1) {
-			return "redirect:/view/resMap";
+			HttpSession hs= request.getSession();
+			hs.setAttribute(Const.LOGIN_USER, param);
+			return "redirect:/restaurant/restMap";
 		} else {
-			return "redirect:/user/login?error=" + result;
+			return "redirect:/user/login?error="+user_id+"&error=" + result;
 		}
 
 	}
@@ -86,6 +97,8 @@ public class UserController {
 		//2(아이디 없음) or 3(아이디 사용)
 		return String.format("ajax:{\"result\": %s}", result);
 	}
+	
+	
 	
 
 }

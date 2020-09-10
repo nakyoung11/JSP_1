@@ -7,7 +7,6 @@ import java.util.List;
 import com.koreait.vo.UserLoginHistoryVO;
 import com.koreait.vo.UserVO;
 
-import oracle.net.aso.e;
 
 public class UserDAO {
 

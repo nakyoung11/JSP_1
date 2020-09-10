@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/") // 모든 요청을 다잡아. 다만 res로 시작하는 모든 요청은 stict
 public class Container extends HttpServlet {
@@ -44,14 +45,20 @@ public class Container extends HttpServlet {
 	}
 
 	private void proc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String routerCheckResult= LoginChkInerceptor.routerChk(request);
+		if(routerCheckResult!=null) {
+			response.sendRedirect(routerCheckResult);
+			return;
+		}
+		
+
 		String temp = mapper.nav(request); //보통 템플릿 파일명이 넘어옴. 
-		
-		
-		
+
 		if(temp.indexOf(":") >= 0){
 			String prefix=temp.substring(0, temp.indexOf(":"));	
 			String value=temp.substring(temp.indexOf(":")+1);
-				
+			// 다시 보기 !!  0	
 				if("redirect".equals(prefix)) {
 					response.sendRedirect(value);
 					return;

@@ -16,13 +16,15 @@
 	</div>	
 	
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-	<script>
+	<script>/*  ajax는 리플래쉬 없이 자바스크립트가 값을 가져온다면 변화를주는것  */
 		function chkId(){
 			const user_id =frm.user_id.value;
 			axios.get('/user/ajaxIdChk',{
+			// get/post                 , 파라미터
 				params:{
-					user_id
-				}
+					user_id:user_id
+				     //  키 :value   post일때는 params를 빼고 키와 value를 빼기
+				} //쿼리스트링으로 날리는 것과 같아. 
 			}).then(function(res){
 				console.log(res)
 				if(res.data.result ==2){
