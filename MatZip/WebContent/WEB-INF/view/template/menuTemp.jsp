@@ -7,18 +7,25 @@
 <meta charset="UTF-8">
 <title>${title}</title>
 </head>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/res/css/common.css">
 <body>
 	<div id="container">
 		<header>
-			
+
 			<h1 class="hidden">MatZip</h1>
 			<nav id=menu>
-			<a href="restarant/reg" class="round">등록</a>
-			<a href="/user/favorite" class="round">찜</a>
-			
-			
+				<a href="/restaurant/restMap" class="round">
+				<span class="material-icons"> location_on </span></a>
+				<a href="/restaurant/restReg" class="round">
+				<span class="material-icons">add</span></a>
+			    <a href="/user/restFavorite" class="round">
+			    <span class="material-icons">favorite</span></a>
+			<div id="search">
+			<input type="search" placeholder="검색어를 입력하세요"></div>
 			</nav>
+			
 			<div id="userinfo">
 				<div class="containerPImg">
 					<c:choose>
@@ -31,7 +38,7 @@
 						</c:otherwise>
 					</c:choose>
 				</div>
-				<div id="userNm">${loginUser.nm}님 환영합니다.</div>
+				<div id="userNm">${loginUser.nm}님환영합니다.</div>
 				<div id="logOut">
 					<a href="/user/logout">로그아웃</a>
 				</div>

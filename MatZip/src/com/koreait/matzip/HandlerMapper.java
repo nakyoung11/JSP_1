@@ -43,6 +43,12 @@ public class HandlerMapper {
 			switch(uriArr[2]) {
 			case "restMap":				
 				return restCon.restMap(request);
+			case "restReg":
+				return restCon.rsetReg(request);
+			case "restRegProc":
+				return restCon.restRegProc(request);
+			case "ajaxGetList":
+				return restCon.ajaxGetList(request);
 				
 			}
 		}
