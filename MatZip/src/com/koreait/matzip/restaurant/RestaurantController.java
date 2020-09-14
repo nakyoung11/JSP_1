@@ -1,12 +1,12 @@
 package com.koreait.matzip.restaurant;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import com.koreait.matzip.CommonDAO;
 import com.koreait.matzip.Const;
 import com.koreait.matzip.SecurityUtils;
 import com.koreait.matzip.ViewRef;
+import com.koreait.matzip.vo.RestaurantDomain;
 import com.koreait.matzip.vo.RestaurantVO;
 import com.koreait.matzip.vo.UserVO;
 
@@ -27,6 +27,20 @@ public class RestaurantController {
 		request.setAttribute("categoryList", CommonDAO.selCodeList(I_M));
 		request.setAttribute(Const.TITLE, "가게등록");
 		request.setAttribute(Const.VIEW, "restaurant/restReg");
+		return ViewRef.TEMP_MENU_TEMP;
+	}
+	
+	public String restDetail(HttpServletRequest request) {
+		String i_restStr = request.getParameter("i_rest");
+		int i_rest=Integer.parseInt(i_restStr);
+		RestaurantDomain param= new RestaurantDomain();
+		param.setI_rest(i_rest);
+		
+		
+	
+		request.setAttribute("data", service.selRsetDetail(param));
+		request.setAttribute(Const.TITLE, "상세");
+		request.setAttribute(Const.VIEW, "restaurant/restDetail");
 		return ViewRef.TEMP_MENU_TEMP;
 	}
 	
@@ -57,8 +71,24 @@ public class RestaurantController {
 		
 	}
 	
+	
+	public String addRecMenusProc(HttpServletRequest request) {
+		String i_restStr=request.getParameter("i_rset");
+		int i_rest=Integer.parseInt(i_restStr);
+		
+		
+		String[] menu_nmArr=request.getParameterValues("menu_nm");
+		String[] menu_priceArr=request.getParameterValues("menu_price");
+		
+		for(int i=0; i<menu_nmArr.length; i++) {
+			System.out.println();
+		}
+		
+		return "redirect:/restaurant/restDetail?";
+	}
+	
 	public String ajaxGetList(HttpServletRequest request) {
-				return "";
+		return "ajax:" + service.getRestList();
 	}
 
 }

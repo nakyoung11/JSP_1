@@ -47,6 +47,12 @@ public class HandlerMapper {
 				return restCon.rsetReg(request);
 			case "restRegProc":
 				return restCon.restRegProc(request);
+			case "restDetail":
+				return restCon.restDetail(request);		
+				
+			case"addRecMenusProc":
+				return restCon.addRecMenusProc(request);
+				
 			case "ajaxGetList":
 				return restCon.ajaxGetList(request);
 				
