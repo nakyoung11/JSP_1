@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+.recommendMenuContainer{
+	width:1200px;
+	height:300px;
+	overflow-y:hidden; 
+ 	overflow-x:auto; 
+	padding: 5px;
+	display:flex;
+	flex-direction:row
+}
+
+.recommendMenuContainer .recMenuItem{
+
+	margin-left: 20px;
+    position: relative;
+
+}
+.recommendMenuContainer .recMenuItem .pic img {
+	width: 200px;
+	height: 200px;
+	
+
+}
+.delIconContainer >.material-icons{
+position: absolute;
+top:10px;
+font-size: 18px;
+margin-left:10px;
+cursor: pointer;
+
+}
