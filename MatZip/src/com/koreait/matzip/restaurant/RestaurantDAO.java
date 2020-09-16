@@ -110,12 +110,31 @@ public class RestaurantDAO {
 		return vo;
 		
 	}
+	public int insMenu(RestaurantRecommendMenuVO param) {
+		String sql= "INSERT INTO t_restaurant_menu"
+				+ " (seq, i_rest, menu_pic) "
+				+ " SELECT IFNULL(MAX(seq), 0) + 1, ?, ?" 
+				+ " FROM t_restaurant_menu" 
+				+ " WHERE i_rest=?";
+		
+		return JdbcTemplate.executeUpdate(sql,new JdbcUpdateInterface() {
+			
+			@Override
+			public void update(PreparedStatement ps) throws SQLException {
+			ps.setInt(1,param.getI_rest());
+			ps.setString(2, param.getMenu_pic());
+			ps.setInt(3,param.getI_rest());	
+			}
+		});
+	}
+	
+	
 	public int insRecommendMenu(RestaurantRecommendMenuVO param) {
 		String sql=" INSERT INTO t_restaurant_recommend_menu"  
 				+"(seq, i_rest, menu_nm, menu_price, menu_pic)" 
 				+ " SELECT IFNULL(MAX(seq), 0) + 1, ?, ?, ? , ?" 
-				+ " FROM t_restaurant_recommend_menu" + 
-				" WHERE i_rest=?";
+				+ " FROM t_restaurant_recommend_menu" 
+				+ " WHERE i_rest=?";
 		
 		return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
 			
@@ -132,6 +151,37 @@ public class RestaurantDAO {
 				
 	
 	}
+	
+	public List<RestaurantRecommendMenuVO> selMenuList(int i_rest){
+		List<RestaurantRecommendMenuVO> list= new ArrayList();
+		String sql=" SELECT seq, menu_pic FROM t_restaurant_menu "
+				+ "WHERE i_rest=?";
+		
+		JdbcTemplate.executeQuery(sql,new JdbcSelectInterface() {
+			
+			@Override
+			public void prepared(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, i_rest);
+				
+			}
+			
+			@Override
+			public void executeQuery(ResultSet rs) throws SQLException {
+		
+				while(rs.next()) {
+					RestaurantRecommendMenuVO vo= new RestaurantRecommendMenuVO();
+					vo.setSeq(rs.getInt("seq"));
+					vo.setMenu_pic(rs.getString("menu_pic"));
+					
+					list.add(vo);
+				}
+				
+			}
+		});		
+		return list;
+	}
+	
+	
 	
 	public List<RestaurantRecommendMenuVO> selRecommendMenuList(int i_rest){
 		List<RestaurantRecommendMenuVO> list= new ArrayList();
@@ -166,14 +216,20 @@ public class RestaurantDAO {
 	}
 	
 	public int delRecommendMenu(RestaurantRecommendMenuVO param) {
-		String sql=" DELETE FROM t_restaurant_recommend_menu WHERE i_rest= ? and seq =? " ;
+		String sql=" DELETE A  "
+				+ " FROM t_restaurant_recommend_menu A"
+				+ " INNER JOIN t_restaurant B"
+				+ " ON A.i_rest = B.i_rest "
+				+  "AND B.i_user= ? "
+				+ " WHERE A.i_rest= ? and A.seq =? " ;
 		
 		return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
 			
 			@Override
 			public void update(PreparedStatement ps) throws SQLException {
-				ps.setInt(1, param.getI_rest());
-				ps.setInt(2, param.getSeq());
+				ps.setInt(1, param.getI_user());
+				ps.setInt(2, param.getI_rest());
+				ps.setInt(3, param.getSeq());
 				
 			}
 		});

@@ -4,13 +4,20 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+
 
 @WebServlet("/") // 모든 요청을 다잡아. 다만 res로 시작하는 모든 요청은 stict
+@MultipartConfig(
+		fileSizeThreshold = 10_485_760, // 10 MB
+		maxFileSize = 52_428_800, // 50 MB
+		maxRequestSize = 104_857_600 // 100 MB
+	)
 public class Container extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

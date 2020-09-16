@@ -20,6 +20,7 @@
 
 <body>
 	<div id="container">
+		
 		<header>
 
 			<h1 class="hidden">MatZip</h1>
@@ -27,7 +28,7 @@
 				<a href="/restaurant/restMap" class="round">
 				<span class="material-icons"> location_on </span></a>
 				<a href="/restaurant/restReg" class="round">
-				<span class="material-icons">add</span></a>
+				<span class="material-icons">add_business</span>
 			    <a href="/user/restFavorite" class="round">
 			    <span class="material-icons">favorite</span></a>
 			<div id="search">

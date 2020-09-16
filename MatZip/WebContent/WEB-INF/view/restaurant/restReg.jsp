@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div id="sectionContainerCenter">
 	<div>
+	<span class="material-icons" style="font-size:200px" id="stor" >storefront</span>
 		<form action="/restaurant/restRegProc" method="post" id="frm" onsubmit="return chkFrm()">
 			<div>
 				<input type="text" name="nm" placeholder="가게명">

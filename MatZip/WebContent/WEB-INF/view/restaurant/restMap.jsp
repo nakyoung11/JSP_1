@@ -15,7 +15,7 @@
 	<script>
 			
 		const options = { //지도를 생성할 때 필요한 기본 옵션
-			center: new kakao.maps.LatLng(35.958437, 128.486084), //지도의 중심좌표.
+			center: new kakao.maps.LatLng(35.8654527, 128.5933207), //지도의 중심좌표.
 			level: 5 //지도의 레벨(확대, 축소 정도)
 		};
 	

@@ -58,6 +58,10 @@ public class SecurityUtils {
 		return sb.toString();
 	}
 	
+	public static int getLoginUserPk(HttpServletRequest request) {
+		return getLoginUser(request).getI_user();
+	}
+	
 	public static UserVO getLoginUser(HttpServletRequest request) {
 		HttpSession hs= request.getSession();
 		return (UserVO)hs.getAttribute(Const.LOGIN_USER);
